@@ -71,7 +71,65 @@ Appearance: ='BadgeCanvas.Appearance'.Tint
 
 - **画面全体は必ずコンテナ（`GroupContainer`）で管理する。** Screen直下に個々のControlを無秩序に置かない。
 - 基本構成は `Header` / `SearchArea` / `ContentArea` / `ActionArea` のようなゾーニングを優先する。
-- `AutoLayout` を基本とし、画面幅に応じて内容が破綻しないようにする。ピクセル固定が必要な箇所のみ `ManualLayout`。
+- **`AutoLayout` を既定にする。`ManualLayout`＋絶対座標（`X`/`Y`）は限定的な例外だけに使う。** 画面幅に応じて内容が破綻しないようにするため。
+
+### 参考画像（スクリーンショット・デザインカンプ）を再現するときも、まずAutoLayoutのゾーンに分解する
+
+「この画像の通りに作って」という指示を受けたときに、**画像上の各要素のピクセル位置を測って`ManualLayout`＋`X`/`Y`でそのまま再現しようとしない。** これをやると、ヘッダーバー・サイドナビの各項目・統計カードの並び・フィルタ行・テーブルの見出し行とデータ行など、本来くり返し構造として扱うべき部分まで個別の絶対座標になり、次のような問題が実際に起きる。
+
+- 画面幅やコンテンツ量が変わると要素が重なる・崩れる。
+- ラベルと入力欄など隣接する要素のY座標を手計算するため、計算を誤ると要素同士が重なる。
+- `ManualLayout`の子要素は`GroupContainer`の必須プロパティ（`Width`/`Height`）を書き忘れやすく、書き忘れると描画が崩れる。
+
+**正しい手順**: 画像を見たらまず「ヘッダー」「サイドナビ」「メインコンテンツ（さらにタイトル行／統計カード行／フィルタ行／テーブル見出し行／テーブル本体）」のような**ゾーンに分解**する。各ゾーンは`AutoLayout`の`GroupContainer`（`LayoutDirection`/`LayoutGap`/`LayoutAlignItems`/Padding系）で組み立てる。「同じ形の項目が複数並んでいる」（サイドナビの項目、統計カード、テーブルの行など）場合は、絶対座標を個別計算するのではなく、`Gallery`か、`AutoLayout`の`GroupContainer`を縦・横に並べて`LayoutGap`で間隔を作る。
+
+```yaml
+# ❌ サイドナビの各項目を絶対座標で個別に配置（画面サイズが変わると崩れる、Y座標の手計算を間違えやすい）
+grpSidebar:
+  Control: GroupContainer
+  Variant: ManualLayout
+  Properties:
+    Height: =600
+    Width: =260
+  Children:
+    - navItem1:
+        Properties:
+          X: =0
+          Y: =20
+          Height: =48
+          Width: =260
+    - navItem2:
+        Properties:
+          X: =0
+          Y: =68   # 20 + 48 を手計算。項目が増減するたびに全項目のYを計算し直す必要がある
+          Height: =48
+          Width: =260
+
+# ✅ AutoLayout（縦並び）+ LayoutGapで自動的に並べる。項目の増減にも強い
+grpSidebar:
+  Control: GroupContainer
+  Variant: AutoLayout
+  Properties:
+    LayoutDirection: =LayoutDirection.Vertical
+    Height: =600
+    Width: =260
+  Children:
+    - navItem1:
+        Properties:
+          AlignInContainer: =AlignInContainer.Start
+          FillPortions: =0
+          Height: =48
+          Width: =260
+    - navItem2:
+        Properties:
+          AlignInContainer: =AlignInContainer.Start
+          FillPortions: =0
+          Height: =48
+          Width: =260
+```
+
+`ManualLayout`を使ってよいのは、要素同士をあえて重ねたい場合（アイコンの上に小さなバッジを重ねる、背景画像の上にテキストを重ねる等）や、`AutoLayout`のゾーン分解では表現しづらい自由配置が本当に必要な、限定的な場合だけにする。画面の大部分（ヘッダー・サイドナビ・行・カードの並びなど）が`ManualLayout`だらけになっている場合は、設計を見直すサインである。
+
 - 水平コンテナ・垂直コンテナ内の要素は `FillPortions` を `0` とする（詳細は[第8章 配置ルール](#配置ルール)）。
 - コンテナ内の要素は `AlignInContainer` を**必ず明示的に指定する**（`Start`など）。指定を省略すると既定値が `Stretch` になり、縦方向・横方向どちらでも意図せず親いっぱいに引き伸ばされることがあるため、「使わない」ではなく「Stretch以外を明示する」で徹底する。
 - コンテナ内に要素を配置する際、意図しない隙間（余白）ができる構成にしない。**これは縦方向（Height）・横方向（Width）の両方に適用する。** 片方だけ気を付けて他方を見落とさないこと（計算方法は[第8章 配置ルール](#配置ルール)）。
@@ -625,6 +683,7 @@ Screens:
 - 推奨: `X`, `Y`, `Default`, `Placeholder`, `AccessibleLabel`, `BasePaletteColor`, `BorderStyle`, `BorderThickness`
 - 使用可能な主なProperties: `AccessibleLabel`, `BasePaletteColor`, `BorderStyle`, `BorderThickness`, `Default`, `Font`, `MaxLength`, `Placeholder`, `Type`, Padding系, Radius系, `Width`, `Height`, `X`, `Y`
 - 未入力時のヒント表示は、プロパティ名 **`Placeholder`** に文字列を指定する。複数行入力は `Type: =TextInputType.Multiline`、最大文字数は `MaxLength`。
+- **`AccessibleLabel`は画面には表示されない**（スクリーンリーダー向けの説明文のみ）。見た目のヒント文字列は必ず`Placeholder`で設定する。
 
 ### ModernDropdown
 - Control: `ModernDropdown@1.0.1`
@@ -633,6 +692,7 @@ Screens:
 - 使用可能な主なProperties: `AccessibleLabel`, `Appearance`, `BasePaletteColor`, `BorderColor`, `BorderStyle`, `BorderThickness`, `Color`, `Default`, `Fill`, `Font`, `ItemDisplayText`, `Items`, Padding系, Radius系, `Width`, `Height`, `X`, `Y`
 - 注意: `Items` 未指定は禁止。`Default` が不明な場合は `Default` を出力しない。`Default: |+ =` のような不正な空値は禁止。
 - **単一選択（`ModernDropdown`）の初期値プロパティは `Default`。** 複数選択が必要な場合は`ModernDropdown`ではなく`ModernCombobox`を使う（初期値プロパティ名もコントロールごとに異なる）。
+- **`Default`は`Items`の1行と同じ形の「レコード」を指定する。文字列だけを指定しない。** `Items`が`Value`列を持つレコードのテーブルなら、`Default`も`={ Value: "すべて" }`のようにレコードにする。`Default: ="すべて"`のように文字列だけを指定すると型が一致せず、初期選択が正しく機能しない。
 - **重要: `Placeholder` プロパティは存在しない**（`ModernTextInput`/`ModernDatePicker`と違い、未選択時に何も表示するものがない）。`Default`のレコードが実際に選択済みとして視覚的に反映されないケースがあり、その場合ドロップダウンが空欄に見えて何のフィルタか利用者にわからなくなる。**フィルタ用途などで複数のドロップダウンを並べる場合は、各ドロップダウンの上（または横）に小さな`ModernText`ラベルを必ず添える**（`Default`の表示に頼らない）。
 - `Appearance`（`FilledDarker`/`FilledLighter`/`Outline`）を明示すること。未指定のままにしない。
 
@@ -862,6 +922,9 @@ Screens:
 - [ ] `ModernLink` に `Text` と `URL` があるか
 - [ ] `HtmlViewer` に `HtmlText` があるか
 - [ ] `ManualLayout` 配下のControlに `X`/`Y`/`Width`/`Height` があるか
+- [ ] **画面の大部分（ヘッダー・サイドナビ・カードの並び・テーブルの行など）が`ManualLayout`＋絶対座標だらけになっていないか。** くり返し構造は`AutoLayout`のゾーン分解（または`Gallery`）で組み立てているか
+- [ ] `ModernTextInput`で見た目のヒント文字列を表示したいのに、`AccessibleLabel`だけを設定して`Placeholder`を設定し忘れていないか
+- [ ] `ModernDropdown`/`ModernCombobox`の`Default`が、`Items`の1行と同じ形のレコードになっているか（文字列だけになっていないか）
 - [ ] `AutoLayout` 配下で不要な `X`/`Y` を無理に指定していないか
 - [ ] `Properties` 階層に正しく記載されているか
 - [ ] `Children` 階層が正しいか
