@@ -739,6 +739,22 @@ Screens:
 
   表にない `Size` を使う場合は `Height ≥ Size × 1.5 + 10` で計算する（表の値と一致しない独自の目分量にしない）。`Wrap: =true` で複数行になる場合は、上記を1行あたりの最小値として扱い、行数分の余裕を追加すること。
 
+  **さらに推奨: 固定の数値を目分量・暗算で決めず、`Height` 自体を `Size` から計算する式にする。** `Height: =Self.Size * 1.5 + 10` のように書けば、`Size` を変更してもこの制約が自動的に満たされ続け、暗算ミスによる違反が構造的に起きなくなる（複数行時は `+ 行数分の高さ` を式に足す）。数値を決め打ちする場合より優先してこちらを使う。
+
+  ```yaml
+  # ❌ Sizeから逆算した数値を手入力（暗算ミスや後からのSize変更で崩れやすい）
+  txtCardAllValue:
+    Properties:
+      Size: =24
+      Height: =32   # 本来 46 必要（24*1.5+10）だが目分量で32にしてしまった
+
+  # ✅ Heightを Size からの計算式にして、常に条件を満たすようにする
+  txtCardAllValue:
+    Properties:
+      Size: =24
+      Height: =Self.Size * 1.5 + 10
+  ```
+
 ### ModernButton
 - Control: `ModernButton@1.0.0`
 - 必須: `Text`, `Width`, `Height`
@@ -1016,6 +1032,22 @@ Screens:
 - `GroupContainer` の `DropShadow` を省略しない（既定値が `None` とは限らない）。影が不要な場合も `DropShadow.None` を明示する。
 - プロパティを省略したときの既定値を「中立・無効」と推測で決めつけない。
 - `Gallery` の `TemplatePadding` を未指定のまま行間ができることを期待しない（`=0` を明示し、行間は `TemplateSize` と行テンプレートの `Height` の差分で作る）。
+- **子要素が無い`GroupContainer`に `Children: []` のようなフロースタイル（`[...]`）の空配列を書かない。** `.pa.yaml`のパーサーはこの書き方を構文エラー（`YamlInvalidSyntax; Expected 'Scalar', got 'SequenceStart'`）にする。スペーサー用など子要素を持たないコンテナを作るときは、**`Children` キー自体を省略する。**
+
+  ```yaml
+  # ❌ 空のフロースタイル配列 → コンパイルエラー(PA1001)になる
+  grpSpacer:
+    Control: GroupContainer
+    Properties:
+      FillPortions: =1
+    Children: []
+
+  # ✅ 子要素が無い場合は Children キーごと書かない
+  grpSpacer:
+    Control: GroupContainer
+    Properties:
+      FillPortions: =1
+  ```
 
 ## 11. AI生成時の推奨事項
 
@@ -1039,6 +1071,7 @@ Screens:
 - [ ] `ModernLink` に `Text` と `URL` があるか
 - [ ] `HtmlViewer` に `HtmlText` があるか
 - [ ] `ManualLayout` 配下のControlに `X`/`Y`/`Width`/`Height` があるか
+- [ ] 子要素が無いコンテナ（スペーサーなど）で `Children: []` のようなフロースタイル空配列を書いていないか。子要素が無いなら `Children` キー自体を省略しているか
 - [ ] **画面の大部分（ヘッダー・サイドナビ・カードの並び・テーブルの行など）が`ManualLayout`＋絶対座標だらけになっていないか。** くり返し構造は`AutoLayout`のゾーン分解（または`Gallery`）で組み立てているか
 - [ ] ヘッダー行などの右寄せ要素（通知アイコン・ユーザー名など）の位置を、画面幅から逆算した固定`X`で決め打ちしていないか。`AutoLayout`の水平コンテナ＋`FillPortions: =1`のスペーサー（または`LayoutJustifyContent.SpaceBetween`）で右端に押し出しているか
 - [ ] `ModernTextInput`で見た目のヒント文字列を表示したいのに、`AccessibleLabel`だけを設定して`Placeholder`を設定し忘れていないか
