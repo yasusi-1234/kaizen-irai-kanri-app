@@ -1,0 +1,677 @@
+Screens:
+  RequestFormScreen:
+    Properties:
+      Fill: =RGBA(246, 247, 249, 1)
+      OnVisible: |-
+        =UpdateContext({ locShowConfirm: false })
+    Children:
+      - grpRootFm:
+          Control: GroupContainer
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Horizontal
+            Width: =Parent.Width
+          Children:
+            - grpSideNavFm:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Start
+                  DropShadow: =DropShadow.None
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =4
+                  PaddingBottom: =16
+                  PaddingLeft: =12
+                  PaddingRight: =12
+                  PaddingTop: =16
+                  Width: =220
+                Children:
+                  - txtAppTitleFm:
+                      Control: ModernText
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Color: =RGBA(17, 24, 39, 1)
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        Size: =16
+                        Text: ="改善依頼管理アプリ"
+                        Width: =196
+                  - grpBtnNavHomeFmShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavHomeFm:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="Home"
+                              OnSelect: =Navigate(HomeScreen, ScreenTransition.None)
+                              Text: ="ホーム"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavListFmShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavListFm:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="DocumentBulletList"
+                              OnSelect: |-
+                                =Navigate(RequestListScreen, ScreenTransition.None, { locMyRequestsOnly: false })
+                              Text: ="依頼一覧"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavFormFmShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavFormFm:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Height: =44
+                              Icon: ="Add"
+                              OnSelect: =Navigate(RequestFormScreen, ScreenTransition.None)
+                              Text: ="依頼登録"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavDashboardFmShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavDashboardFm:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="PulseSquare"
+                              OnSelect: =Navigate(DashboardScreen, ScreenTransition.None)
+                              Text: ="ダッシュボード"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavMasterFmShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavMasterFm:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="Settings"
+                              OnSelect: =Navigate(MasterManagementScreen, ScreenTransition.None)
+                              Text: ="マスタ管理"
+                              Width: =196
+                              X: =0
+                              Y: =0
+            - grpMainFm:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Start
+                  DropShadow: =DropShadow.None
+                  FillPortions: =0
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =16
+                  PaddingBottom: =24
+                  PaddingLeft: =24
+                  PaddingRight: =24
+                  PaddingTop: =24
+                  Width: =Parent.Width - 220
+                Children:
+                  - txtTitleFm:
+                      Control: ModernText
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Color: =RGBA(17, 24, 39, 1)
+                        FontWeight: =FontWeight.Bold
+                        Height: =46
+                        Size: =24
+                        Text: ="新規依頼登録"
+                        Width: =400
+                  - grpFormScrollArea:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =Parent.Height - 170
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutMaxHeight: =Parent.Height - 170
+                        LayoutOverflowY: =LayoutOverflow.Scroll
+                        Width: =Parent.Width - 48
+                      Children:
+                        - grpFormRow:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =808
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =16
+                              Width: =Parent.Width
+                            Children:
+                              - grpFormLeft:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    DropShadow: =DropShadow.Semilight
+                                    Fill: =RGBA(255, 255, 255, 1)
+                                    FillPortions: =7
+                                    Height: =804
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =14
+                                    LayoutMinWidth: =460
+                                    PaddingBottom: =20
+                                    PaddingLeft: =20
+                                    PaddingRight: =20
+                                    PaddingTop: =20
+                                    RadiusBottomLeft: =8
+                                    RadiusBottomRight: =8
+                                    RadiusTopLeft: =8
+                                    RadiusTopRight: =8
+                                  Children:
+                                    - txtFormLeftTitle:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Color: =RGBA(17, 24, 39, 1)
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =34
+                                          Size: =16
+                                          Text: ="基本情報"
+                                    - txtLabelTitle:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Color: =RGBA(17, 24, 39, 1)
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =13
+                                          Text: ="タイトル ※必須（50文字以内）"
+                                    - inpTitle:
+                                        Control: ModernTextInput
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Height: =40
+                                          MaxLength: =50
+                                    - txtLabelCategory:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Color: =RGBA(17, 24, 39, 1)
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =13
+                                          Text: ="カテゴリ ※必須"
+                                    - ddlCategoryFm:
+                                        Control: ModernDropdown
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Appearance: =Appearance.Outline
+                                          Default: =First(Sort(Filter(カテゴリマスタ, IsActive = true), SortOrder))
+                                          Height: =40
+                                          ItemDisplayText: =ThisItem.Title
+                                          Items: =Sort(Filter(カテゴリマスタ, IsActive = true), SortOrder)
+                                          Width: =300
+                                    - txtLabelBody:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Color: =RGBA(17, 24, 39, 1)
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =13
+                                          Text: ="依頼内容 ※必須"
+                                    - inpBody:
+                                        Control: ModernTextInput
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Height: =100
+                                          Type: =TextInputType.Multiline
+                                    - txtLabelPreferred:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Color: =RGBA(17, 24, 39, 1)
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =13
+                                          Text: ="希望対応日（任意）"
+                                    - dtpPreferred:
+                                        Control: ModernDatePicker
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Height: =40
+                                          Width: =240
+                                    - txtLabelPriority:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Color: =RGBA(17, 24, 39, 1)
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =13
+                                          Text: ="優先度 ※必須"
+                                    - selPriority:
+                                        Control: ModernRadio
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Default: =LookUp(優先度マスタ, Title = "中")
+                                          Height: =32
+                                          ItemDisplayText: =Text(ThisItem.Title)
+                                          Items: =Sort(Filter(優先度マスタ, IsActive = true), SortOrder, SortOrder.Descending)
+                                          Layout: =OptionLayout.Horizontal
+                                    - txtLabelDept:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Color: =RGBA(17, 24, 39, 1)
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =13
+                                          Text: ="関係部署（公開範囲が「関係者のみ」の場合は必須・複数選択可）"
+                                    - cmbDepartments:
+                                        Control: ModernCombobox
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Height: =40
+                                          ItemDisplayText: =ThisItem.Title
+                                          Items: =Sort(Filter(担当部署マスタ, IsActive = true), SortOrder)
+                                          Width: =400
+                                    - txtLabelVisibility:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Color: =RGBA(17, 24, 39, 1)
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =30
+                                          Size: =13
+                                          Text: ="公開範囲 ※必須"
+                                    - selVisibility:
+                                        Control: ModernRadio
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Default: |-
+                                            ={ Value: "全社" }
+                                          Height: =32
+                                          ItemDisplayText: =Text(ThisItem.Value)
+                                          Items: |-
+                                            =Table({ Value: "全社" }, { Value: "関係者のみ" })
+                                          Layout: =OptionLayout.Horizontal
+                                          Width: =300
+                              - grpFormRight:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    DropShadow: =DropShadow.Semilight
+                                    Fill: =RGBA(255, 255, 255, 1)
+                                    FillPortions: =3
+                                    Height: =804
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =14
+                                    LayoutMinWidth: =280
+                                    PaddingBottom: =20
+                                    PaddingLeft: =20
+                                    PaddingRight: =20
+                                    PaddingTop: =20
+                                    RadiusBottomLeft: =8
+                                    RadiusBottomRight: =8
+                                    RadiusTopLeft: =8
+                                    RadiusTopRight: =8
+                                  Children:
+                                    - txtFormRightTitle:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Color: =RGBA(17, 24, 39, 1)
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =34
+                                          Size: =16
+                                          Text: ="添付ファイル"
+                                    - grpDropZone:
+                                        Control: GroupContainer
+                                        Variant: AutoLayout
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          BorderColor: =RGBA(209, 213, 219, 1)
+                                          BorderStyle: =BorderStyle.Dashed
+                                          BorderThickness: =2
+                                          DropShadow: =DropShadow.None
+                                          Fill: =RGBA(249, 250, 251, 1)
+                                          FillPortions: =0
+                                          Height: =678
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutGap: =12
+                                          LayoutJustifyContent: =LayoutJustifyContent.Center
+                                          RadiusBottomLeft: =6
+                                          RadiusBottomRight: =6
+                                          RadiusTopLeft: =6
+                                          RadiusTopRight: =6
+                                          Width: =Parent.Width - 40
+                                        Children:
+                                          - icoUpload:
+                                              Control: ModernIcon
+                                              Properties:
+                                                AlignInContainer: =AlignInContainer.Center
+                                                Height: =48
+                                                Icon: ="DocumentArrowUp"
+                                                IconColor: =RGBA(107, 114, 128, 1)
+                                                Width: =48
+                                          - txtDropHint:
+                                              Control: ModernText
+                                              Properties:
+                                                Align: =Align.Center
+                                                AlignInContainer: =AlignInContainer.Center
+                                                Color: =RGBA(107, 114, 128, 1)
+                                                Height: =30
+                                                Size: =13
+                                                Text: ="ここにファイルを"
+                                                Width: =200
+                                          - txtDropHint2:
+                                              Control: ModernText
+                                              Properties:
+                                                Align: =Align.Center
+                                                AlignInContainer: =AlignInContainer.Center
+                                                Color: =RGBA(107, 114, 128, 1)
+                                                Height: =30
+                                                Size: =13
+                                                Text: ="ドラッグ&ドロップ"
+                                                Width: =200
+                                          - txtDropOr:
+                                              Control: ModernText
+                                              Properties:
+                                                Align: =Align.Center
+                                                AlignInContainer: =AlignInContainer.Center
+                                                Color: =RGBA(156, 163, 175, 1)
+                                                Height: =28
+                                                Size: =12
+                                                Text: ="または"
+                                                Width: =200
+                                          - grpBtnSelectFileShadow:
+                                              Control: GroupContainer
+                                              Variant: ManualLayout
+                                              Properties:
+                                                AlignInContainer: =AlignInContainer.Center
+                                                DropShadow: =DropShadow.Semilight
+                                                FillPortions: =0
+                                                Height: =40
+                                                Width: =180
+                                              Children:
+                                                - btnSelectFile:
+                                                    Control: ModernButton
+                                                    Properties:
+                                                      Appearance: =ButtonAppearance.Secondary
+                                                      Height: =40
+                                                      Icon: ="Attach"
+                                                      OnSelect: =Notify("モックのため、ファイル選択は動作しません。", NotificationType.Information, 3000)
+                                                      Text: ="ファイルを選択"
+                                                      Width: =180
+                                                      X: =0
+                                                      Y: =0
+                                    - txtFormRightCaption:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                          Color: =RGBA(107, 114, 128, 1)
+                                          Height: =28
+                                          Size: =12
+                                          Text: ="最大10MBまで（画像、Excel、PDFなど）"
+                  - grpFormActions:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =44
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutJustifyContent: =LayoutJustifyContent.End
+                        Width: =Parent.Width - 48
+                      Children:
+                        - grpBtnCancelShadow:
+                            Control: GroupContainer
+                            Variant: ManualLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              DropShadow: =DropShadow.Semilight
+                              FillPortions: =0
+                              Height: =40
+                              Width: =120
+                            Children:
+                              - btnCancel:
+                                  Control: ModernButton
+                                  Properties:
+                                    Appearance: =ButtonAppearance.Outline
+                                    Height: =40
+                                    OnSelect: |-
+                                      =Navigate(RequestListScreen, ScreenTransition.None, { locMyRequestsOnly: false })
+                                    Text: ="キャンセル"
+                                    Width: =120
+                                    X: =0
+                                    Y: =0
+                        - grpBtnGoConfirmShadow:
+                            Control: GroupContainer
+                            Variant: ManualLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              DropShadow: =DropShadow.Semilight
+                              FillPortions: =0
+                              Height: =40
+                              Width: =140
+                            Children:
+                              - btnGoConfirm:
+                                  Control: ModernButton
+                                  Properties:
+                                    Height: =40
+                                    OnSelect: |-
+                                      =If(
+                                        IsBlank(inpTitle.Text) || IsBlank(ddlCategoryFm.Selected.Title) || IsBlank(inpBody.Text) || IsBlank(selPriority.Selected.Title) || IsBlank(selVisibility.Selected.Value),
+                                        Notify("必須項目が未入力です。", NotificationType.Error, 5000),
+                                        If(
+                                          selVisibility.Selected.Value = "関係者のみ" And CountRows(cmbDepartments.SelectedItems) = 0,
+                                          Notify("公開範囲が「関係者のみ」の場合は関係部署を選択してください。", NotificationType.Error, 5000),
+                                          UpdateContext({ locShowConfirm: true })
+                                        )
+                                      )
+                                    Text: ="確認画面へ"
+                                    Width: =140
+                                    X: =0
+                                    Y: =0
+      - grpConfirmOverlay:
+          Control: GroupContainer
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Fill: =RGBA(0, 0, 0, 0.4)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            Visible: =locShowConfirm = true
+            Width: =Parent.Width
+          Children:
+            - grpConfirmCard:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Center
+                  DropShadow: =DropShadow.Semilight
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =260
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =16
+                  PaddingBottom: =24
+                  PaddingLeft: =24
+                  PaddingRight: =24
+                  PaddingTop: =24
+                  RadiusBottomLeft: =12
+                  RadiusBottomRight: =12
+                  RadiusTopLeft: =12
+                  RadiusTopRight: =12
+                  Width: =480
+                Children:
+                  - txtConfirmTitle:
+                      Control: ModernText
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Color: =RGBA(17, 24, 39, 1)
+                        FontWeight: =FontWeight.Bold
+                        Height: =37
+                        Size: =18
+                        Text: ="この内容で依頼を登録しますか？"
+                        Width: =432
+                  - txtConfirmSummary:
+                      Control: ModernText
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Color: =RGBA(55, 65, 81, 1)
+                        Height: =100
+                        Size: =14
+                        Text: |-
+                          =$"タイトル: {inpTitle.Text}" & Char(10) & $"カテゴリ: {ddlCategoryFm.Selected.Title}" & Char(10) & $"優先度: {selPriority.Selected.Title}" & Char(10) & $"公開範囲: {selVisibility.Selected.Value}"
+                        Width: =432
+                  - grpConfirmActions:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =44
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutJustifyContent: =LayoutJustifyContent.End
+                        Width: =432
+                      Children:
+                        - grpBtnConfirmCancelShadow:
+                            Control: GroupContainer
+                            Variant: ManualLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              DropShadow: =DropShadow.Semilight
+                              FillPortions: =0
+                              Height: =40
+                              Width: =120
+                            Children:
+                              - btnConfirmCancel:
+                                  Control: ModernButton
+                                  Properties:
+                                    Appearance: =ButtonAppearance.Outline
+                                    Height: =40
+                                    OnSelect: |-
+                                      =UpdateContext({ locShowConfirm: false })
+                                    Text: ="キャンセル"
+                                    Width: =120
+                                    X: =0
+                                    Y: =0
+                        - grpBtnConfirmSubmitShadow:
+                            Control: GroupContainer
+                            Variant: ManualLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              DropShadow: =DropShadow.Semilight
+                              FillPortions: =0
+                              Height: =40
+                              Width: =120
+                            Children:
+                              - btnConfirmSubmit:
+                                  Control: ModernButton
+                                  Properties:
+                                    Height: =40
+                                    OnSelect: |-
+                                      =With(
+                                        { locNewStatusRow: LookUp(ステータスマスタ, StatusKey = "NotAccepted") },
+                                        IfError(
+                                          Patch(
+                                            依頼,
+                                            Defaults(依頼),
+                                            {
+                                              Title: inpTitle.Text,
+                                              CategoryId: { Id: ddlCategoryFm.Selected.ID, Value: ddlCategoryFm.Selected.Title },
+                                              RequestBody: inpBody.Text,
+                                              PreferredDate: If(IsBlank(dtpPreferred.SelectedDate), Blank(), dtpPreferred.SelectedDate),
+                                              PriorityId: { Id: selPriority.Selected.ID, Value: selPriority.Selected.Title },
+                                              StatusId: { Id: locNewStatusRow.ID, Value: locNewStatusRow.Title },
+                                              Requester: {
+                                                Claims: "i:0#.f|membership|" & Lower(User().Email),
+                                                Department: "",
+                                                DisplayName: User().FullName,
+                                                Email: User().Email,
+                                                JobTitle: "",
+                                                Picture: ""
+                                              },
+                                              DueDate: If(IsBlank(dtpPreferred.SelectedDate), Today() + 14, dtpPreferred.SelectedDate),
+                                              Visibility: { Value: selVisibility.Selected.Value },
+                                              RelatedDepartments: ForAll(cmbDepartments.SelectedItems, { Id: ID, Value: Title }),
+                                              IsHidden: false
+                                            }
+                                          );
+                                          UpdateContext({ locShowConfirm: false });
+                                          Notify("依頼を登録しました。", NotificationType.Success);
+                                          Navigate(RequestListScreen, ScreenTransition.None, { locMyRequestsOnly: true }),
+                                          Notify("依頼の登録に失敗しました。時間をおいて再度お試しください。", NotificationType.Error, 5000)
+                                        )
+                                      )
+                                    Text: ="登録する"
+                                    Width: =120
+                                    X: =0
+                                    Y: =0

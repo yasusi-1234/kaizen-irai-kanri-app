@@ -1,0 +1,895 @@
+Screens:
+  MasterManagementScreen:
+    Properties:
+      Fill: =RGBA(246, 247, 249, 1)
+      OnVisible: |-
+        =UpdateContext({
+          locMasterTab: "カテゴリ",
+          locShowAddCategory: false
+        })
+    Children:
+      - grpRootMm:
+          Control: GroupContainer
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Horizontal
+            Width: =Parent.Width
+          Children:
+            - grpSideNavMm:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Start
+                  DropShadow: =DropShadow.None
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =4
+                  PaddingBottom: =16
+                  PaddingLeft: =12
+                  PaddingRight: =12
+                  PaddingTop: =16
+                  Width: =220
+                Children:
+                  - txtAppTitleMm:
+                      Control: ModernText
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Color: =RGBA(17, 24, 39, 1)
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        Size: =16
+                        Text: ="改善依頼管理アプリ"
+                        Width: =196
+                  - grpBtnNavHomeMmShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavHomeMm:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="Home"
+                              OnSelect: =Navigate(HomeScreen, ScreenTransition.None)
+                              Text: ="ホーム"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavListMmShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavListMm:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="DocumentBulletList"
+                              OnSelect: |-
+                                =Navigate(RequestListScreen, ScreenTransition.None, { locMyRequestsOnly: false })
+                              Text: ="依頼一覧"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavFormMmShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavFormMm:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="Add"
+                              OnSelect: =Navigate(RequestFormScreen, ScreenTransition.None)
+                              Text: ="依頼登録"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavDashboardMmShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavDashboardMm:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="PulseSquare"
+                              OnSelect: =Navigate(DashboardScreen, ScreenTransition.None)
+                              Text: ="ダッシュボード"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavMasterMmShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavMasterMm:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Height: =44
+                              Icon: ="Settings"
+                              OnSelect: =Navigate(MasterManagementScreen, ScreenTransition.None)
+                              Text: ="マスタ管理"
+                              Width: =196
+                              X: =0
+                              Y: =0
+            - grpMainMm:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Start
+                  DropShadow: =DropShadow.None
+                  FillPortions: =0
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =16
+                  PaddingBottom: =24
+                  PaddingLeft: =24
+                  PaddingRight: =24
+                  PaddingTop: =24
+                  Width: =Parent.Width - 220
+                Children:
+                  - txtTitleMm:
+                      Control: ModernText
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Color: =RGBA(17, 24, 39, 1)
+                        FontWeight: =FontWeight.Bold
+                        Height: =46
+                        Size: =24
+                        Text: ="マスタ管理"
+                        Width: =400
+                  - tabMaster:
+                      Control: ModernTabList
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Appearance: =TabListAppearance.Subtle
+                        Default: |-
+                          ={ Value: "カテゴリ" }
+                        Height: =44
+                        ItemDisplayText: =Text(ThisItem.Value)
+                        Items: |-
+                          =Table({ Value: "カテゴリ" }, { Value: "優先度" }, { Value: "部署" }, { Value: "ステータス" }, { Value: "管理者" })
+                        OnChange: |-
+                          =UpdateContext({ locMasterTab: tabMaster.Selected.Value })
+                        TabSize: =TabSize.Medium
+                        Width: =600
+                  - grpCategoryPanel:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =Parent.Height - 220
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =10
+                        PaddingBottom: =16
+                        PaddingLeft: =16
+                        PaddingRight: =16
+                        PaddingTop: =16
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Visible: =locMasterTab = "カテゴリ"
+                        Width: =Parent.Width - 48
+                      Children:
+                        - grpCategoryHeader:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =40
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              Width: =Parent.Width - 32
+                            Children:
+                              - txtCategoryPanelTitle:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(17, 24, 39, 1)
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =16
+                                    Text: ="カテゴリマスタ"
+                                    Width: =300
+                              - grpBtnAddCategoryShadow:
+                                  Control: GroupContainer
+                                  Variant: ManualLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    DropShadow: =DropShadow.Semilight
+                                    FillPortions: =0
+                                    Height: =36
+                                    Width: =130
+                                  Children:
+                                    - btnAddCategory:
+                                        Control: ModernButton
+                                        Properties:
+                                          Height: =36
+                                          Icon: ="Add"
+                                          OnSelect: |-
+                                            =UpdateContext({ locShowAddCategory: true })
+                                          Text: ="新規追加"
+                                          Width: =130
+                                          X: =0
+                                          Y: =0
+                        - grpAddCategoryRow:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              DropShadow: =DropShadow.None
+                              Fill: =RGBA(239, 246, 255, 1)
+                              FillPortions: =0
+                              Height: =52
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =8
+                              PaddingLeft: =10
+                              PaddingTop: =8
+                              RadiusBottomLeft: =6
+                              RadiusBottomRight: =6
+                              RadiusTopLeft: =6
+                              RadiusTopRight: =6
+                              Visible: =locShowAddCategory = true
+                              Width: =Parent.Width - 32
+                            Children:
+                              - inpNewCategoryName:
+                                  Control: ModernTextInput
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Height: =36
+                                    Placeholder: ="カテゴリ名"
+                                    Width: =460
+                              - grpBtnSaveNewCategoryShadow:
+                                  Control: GroupContainer
+                                  Variant: ManualLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    DropShadow: =DropShadow.Semilight
+                                    FillPortions: =0
+                                    Height: =36
+                                    Width: =90
+                                  Children:
+                                    - btnSaveNewCategory:
+                                        Control: ModernButton
+                                        Properties:
+                                          Height: =36
+                                          OnSelect: |-
+                                            =If(
+                                              IsBlank(inpNewCategoryName.Text),
+                                              Notify("カテゴリ名を入力してください。", NotificationType.Error),
+                                              IfError(
+                                                Patch(
+                                                  カテゴリマスタ,
+                                                  Defaults(カテゴリマスタ),
+                                                  { Title: inpNewCategoryName.Text, SortOrder: Max(カテゴリマスタ, SortOrder) + 1, IsActive: true }
+                                                );
+                                                Reset(inpNewCategoryName);
+                                                UpdateContext({ locShowAddCategory: false });
+                                                Notify("カテゴリを追加しました。", NotificationType.Success),
+                                                Notify("カテゴリの追加に失敗しました。", NotificationType.Error, 5000)
+                                              )
+                                            )
+                                          Text: ="保存"
+                                          Width: =90
+                                          X: =0
+                                          Y: =0
+                              - grpBtnCancelAddCategoryShadow:
+                                  Control: GroupContainer
+                                  Variant: ManualLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    DropShadow: =DropShadow.Semilight
+                                    FillPortions: =0
+                                    Height: =36
+                                    Width: =90
+                                  Children:
+                                    - btnCancelAddCategory:
+                                        Control: ModernButton
+                                        Properties:
+                                          Appearance: =ButtonAppearance.Outline
+                                          Height: =36
+                                          OnSelect: |-
+                                            =UpdateContext({ locShowAddCategory: false })
+                                          Text: ="キャンセル"
+                                          Width: =90
+                                          X: =0
+                                          Y: =0
+                        - grpCategoryColumnHeader:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =28
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              Width: =Parent.Width - 32
+                            Children:
+                              - txtColName:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(107, 114, 128, 1)
+                                    FillPortions: =3
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =28
+                                    LayoutMinWidth: =340
+                                    Size: =12
+                                    Text: ="カテゴリ名"
+                                    Wrap: =false
+                              - txtColOrder:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(107, 114, 128, 1)
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =28
+                                    Size: =12
+                                    Text: ="表示順"
+                                    Width: =60
+                              - txtColActive:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(107, 114, 128, 1)
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =28
+                                    Size: =12
+                                    Text: ="有効/無効"
+                                    Width: =80
+                              - txtColOps:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(107, 114, 128, 1)
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =28
+                                    Size: =12
+                                    Text: ="操作"
+                                    Width: =40
+                        - galCategories:
+                            Control: Gallery
+                            Variant: Vertical
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              Height: =Parent.Height - 180
+                              Items: =Sort(カテゴリマスタ, SortOrder)
+                              TemplatePadding: =0
+                              TemplateSize: =44
+                              Width: =Parent.Width - 32
+                            Children:
+                              - grpCategoryRow:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: =RGBA(229, 231, 235, 1)
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Height: =40
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    Width: =Parent.TemplateWidth
+                                  Children:
+                                    - txtRowName:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Color: =RGBA(17, 24, 39, 1)
+                                          FillPortions: =3
+                                          LayoutMinWidth: =340
+                                          Size: =13
+                                          Text: =ThisItem.Title
+                                          Wrap: =false
+                                    - txtRowOrder:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Color: =RGBA(17, 24, 39, 1)
+                                          Size: =13
+                                          Text: =Text(ThisItem.SortOrder)
+                                          Width: =60
+                                    - btnToggleActive:
+                                        Control: ModernButton
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Appearance: =If(ThisItem.IsActive, ButtonAppearance.Subtle, ButtonAppearance.Outline)
+                                          Height: =36
+                                          OnSelect: |-
+                                            =IfError(
+                                              Patch(カテゴリマスタ, ThisItem, { IsActive: !ThisItem.IsActive }),
+                                              Notify("更新に失敗しました。", NotificationType.Error, 5000)
+                                            )
+                                          Text: =If(ThisItem.IsActive, "有効", "無効")
+                                          Width: =80
+                                    - btnDeleteCategory:
+                                        Control: ModernButton
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Appearance: =ButtonAppearance.Subtle
+                                          Height: =36
+                                          Icon: ="Delete"
+                                          Layout: =ButtonLayout.IconOnly
+                                          OnSelect: |-
+                                            =IfError(
+                                              Remove(カテゴリマスタ, ThisItem);
+                                              Notify("カテゴリを削除しました。", NotificationType.Success),
+                                              Notify("削除に失敗しました。", NotificationType.Error, 5000)
+                                            )
+                                          Text: ="削除"
+                                          Width: =40
+                  - grpPriorityPanel:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =Parent.Height - 220
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =10
+                        PaddingLeft: =16
+                        PaddingTop: =16
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Visible: =locMasterTab = "優先度"
+                        Width: =Parent.Width - 48
+                      Children:
+                        - txtPriorityPanelTitle:
+                            Control: ModernText
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              Color: =RGBA(17, 24, 39, 1)
+                              FontWeight: =FontWeight.Semibold
+                              Size: =16
+                              Text: ="優先度マスタ（低・中・高・緊急）"
+                              Width: =400
+                        - galPriorities:
+                            Control: Gallery
+                            Variant: Vertical
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              Height: =Parent.Height - 90
+                              Items: =Sort(優先度マスタ, SortOrder)
+                              TemplatePadding: =0
+                              TemplateSize: =40
+                              Width: =Parent.Width - 32
+                            Children:
+                              - grpPriorityRow:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: =RGBA(229, 231, 235, 1)
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Height: =36
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =20
+                                    Width: =Parent.TemplateWidth
+                                  Children:
+                                    - txtPriorityName:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Color: =RGBA(17, 24, 39, 1)
+                                          FillPortions: =1
+                                          Height: =30
+                                          LayoutMinWidth: =200
+                                          Size: =13
+                                          Text: =ThisItem.Title
+                                          Wrap: =false
+                                    - txtPriorityOrder:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Color: =RGBA(107, 114, 128, 1)
+                                          Height: =28
+                                          Size: =12
+                                          Text: |-
+                                            =$"表示順: {ThisItem.SortOrder}"
+                  - grpDepartmentPanel:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =Parent.Height - 220
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =10
+                        PaddingLeft: =16
+                        PaddingTop: =16
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Visible: =locMasterTab = "部署"
+                        Width: =Parent.Width - 48
+                      Children:
+                        - txtDepartmentPanelTitle:
+                            Control: ModernText
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              Color: =RGBA(17, 24, 39, 1)
+                              FontWeight: =FontWeight.Semibold
+                              Size: =16
+                              Text: ="担当部署マスタ（関係部署の選択肢と共通）"
+                              Width: =450
+                        - galDepartments:
+                            Control: Gallery
+                            Variant: Vertical
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              Height: =Parent.Height - 90
+                              Items: =Sort(担当部署マスタ, SortOrder)
+                              TemplatePadding: =0
+                              TemplateSize: =40
+                              Width: =Parent.Width - 32
+                            Children:
+                              - grpDepartmentRow:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: =RGBA(229, 231, 235, 1)
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Height: =36
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =20
+                                    Width: =Parent.TemplateWidth
+                                  Children:
+                                    - txtDepartmentName:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Color: =RGBA(17, 24, 39, 1)
+                                          FillPortions: =1
+                                          Height: =30
+                                          LayoutMinWidth: =200
+                                          Size: =13
+                                          Text: =ThisItem.Title
+                                          Wrap: =false
+                                    - txtDepartmentOrder:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Color: =RGBA(107, 114, 128, 1)
+                                          Height: =28
+                                          Size: =12
+                                          Text: |-
+                                            =$"表示順: {ThisItem.SortOrder}"
+                  - grpStatusPanel:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =Parent.Height - 220
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =10
+                        PaddingLeft: =16
+                        PaddingTop: =16
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Visible: =locMasterTab = "ステータス"
+                        Width: =Parent.Width - 48
+                      Children:
+                        - txtStatusPanelTitle:
+                            Control: ModernText
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              Color: =RGBA(17, 24, 39, 1)
+                              FontWeight: =FontWeight.Semibold
+                              Height: =31
+                              Size: =14
+                              Text: ="ステータスマスタ（種類の追加・削除は不可。表示名・並び順のみ管理者が編集可能）"
+                              Width: =600
+                        - galStatuses:
+                            Control: Gallery
+                            Variant: Vertical
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              Height: =Parent.Height - 90
+                              Items: =Sort(ステータスマスタ, SortOrder)
+                              TemplatePadding: =0
+                              TemplateSize: =40
+                              Width: =Parent.Width - 32
+                            Children:
+                              - grpStatusRowMm:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: =RGBA(229, 231, 235, 1)
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Height: =36
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =20
+                                    Width: =Parent.TemplateWidth
+                                  Children:
+                                    - badgeStatusName:
+                                        Control: Badge
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Appearance: =LookUp(StatusThemeMap, StatusKey = ThisItem.StatusKey).Appearance
+                                          Content: =ThisItem.Title
+                                          Height: =28
+                                          ThemeColor: =LookUp(StatusThemeMap, StatusKey = ThisItem.StatusKey).ThemeColor
+                                          Width: =100
+                                    - txtStatusKey:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Color: =RGBA(107, 114, 128, 1)
+                                          FillPortions: =1
+                                          Height: =28
+                                          LayoutMinWidth: =200
+                                          Size: =12
+                                          Text: |-
+                                            =$"内部キー: {ThisItem.StatusKey}"
+                                    - txtStatusOrder:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Color: =RGBA(107, 114, 128, 1)
+                                          Height: =28
+                                          Size: =12
+                                          Text: |-
+                                            =$"表示順: {ThisItem.SortOrder}"
+                                          Width: =120
+                  - grpUserPanel:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =Parent.Height - 220
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =10
+                        PaddingLeft: =16
+                        PaddingTop: =16
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Visible: =locMasterTab = "管理者"
+                        Width: =Parent.Width - 48
+                      Children:
+                        - txtUserPanelTitle:
+                            Control: ModernText
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              Color: =RGBA(17, 24, 39, 1)
+                              FontWeight: =FontWeight.Semibold
+                              Size: =16
+                              Text: ="アプリ管理者マスタ（管理者として登録された人のみが一覧に表示されます）"
+                              Width: =600
+                        - grpAdminAddRow:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              DropShadow: =DropShadow.None
+                              Fill: =RGBA(239, 246, 255, 1)
+                              FillPortions: =0
+                              Height: =52
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =8
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              PaddingLeft: =10
+                              PaddingTop: =8
+                              RadiusBottomLeft: =6
+                              RadiusBottomRight: =6
+                              RadiusTopLeft: =6
+                              RadiusTopRight: =6
+                              Width: =Parent.Width - 32
+                            Children:
+                              - inpAdminSearch:
+                                  Control: ModernTextInput
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    FillPortions: =0
+                                    Height: =36
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    Placeholder: ="追加する管理者を名前で検索"
+                                    Width: =260
+                              - cmbAdminSearchResults:
+                                  Control: ModernCombobox
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    FillPortions: =0
+                                    Height: =36
+                                    ItemDisplayText: =ThisItem.DisplayName
+                                    Items: |-
+                                      ='Office365ユーザー'.SearchUser({ searchTerm: inpAdminSearch.Text, top: 25 })
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    Width: =280
+                              - grpBtnAddAdminShadow:
+                                  Control: GroupContainer
+                                  Variant: ManualLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    DropShadow: =DropShadow.Semilight
+                                    FillPortions: =0
+                                    Height: =36
+                                    Width: =90
+                                  Children:
+                                    - btnAddAdmin:
+                                        Control: ModernButton
+                                        Properties:
+                                          FillPortions: =0
+                                          Height: =36
+                                          Icon: ="Add"
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          OnSelect: |-
+                                            =IfError(
+                                              ForAll(
+                                                cmbAdminSearchResults.SelectedItems,
+                                                If(
+                                                  IsBlank(LookUp(アプリ管理者マスタ, AdminUser.Email = Mail)),
+                                                  Patch(
+                                                    アプリ管理者マスタ,
+                                                    Defaults(アプリ管理者マスタ),
+                                                    {
+                                                      AdminUser: {
+                                                        Claims: "i:0#.f|membership|" & Lower(Mail),
+                                                        Department: "",
+                                                        DisplayName: DisplayName,
+                                                        Email: Mail,
+                                                        JobTitle: "",
+                                                        Picture: ""
+                                                      }
+                                                    }
+                                                  )
+                                                )
+                                              );
+                                              Reset(inpAdminSearch);
+                                              Reset(cmbAdminSearchResults);
+                                              Notify("管理者を追加しました。", NotificationType.Success),
+                                              Notify("管理者の追加に失敗しました。", NotificationType.Error, 5000)
+                                            )
+                                          Text: ="追加"
+                                          Width: =90
+                                          X: =0
+                                          Y: =0
+                        - galAdmins:
+                            Control: Gallery
+                            Variant: Vertical
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              FillPortions: =0
+                              Height: =Parent.Height - 150
+                              Items: =Sort(アプリ管理者マスタ, AdminUser.DisplayName)
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              TemplatePadding: =0
+                              TemplateSize: =40
+                              Width: =Parent.Width - 32
+                            Children:
+                              - grpUserRow:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: =RGBA(229, 231, 235, 1)
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Height: =36
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =20
+                                    Width: =Parent.TemplateWidth
+                                  Children:
+                                    - txtAdminName:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Color: =RGBA(17, 24, 39, 1)
+                                          FillPortions: =1
+                                          Height: =30
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =300
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =13
+                                          Text: =ThisItem.AdminUser.DisplayName
+                                          Wrap: =false
+                                    - grpBtnRemoveAdminShadow:
+                                        Control: GroupContainer
+                                        Variant: ManualLayout
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          DropShadow: =DropShadow.Semilight
+                                          FillPortions: =0
+                                          Height: =32
+                                          Width: =40
+                                        Children:
+                                          - btnRemoveAdmin:
+                                              Control: ModernButton
+                                              Properties:
+                                                Appearance: =ButtonAppearance.Subtle
+                                                FillPortions: =0
+                                                Height: =32
+                                                Icon: ="Delete"
+                                                Layout: =ButtonLayout.IconOnly
+                                                LayoutMinHeight: =0
+                                                LayoutMinWidth: =0
+                                                OnSelect: |-
+                                                  =IfError(
+                                                    Remove(アプリ管理者マスタ, ThisItem);
+                                                    Notify("管理者から解除しました。", NotificationType.Success),
+                                                    Notify("解除に失敗しました。", NotificationType.Error, 5000)
+                                                  )
+                                                Text: ="削除"
+                                                Width: =40
+                                                X: =0
+                                                Y: =0

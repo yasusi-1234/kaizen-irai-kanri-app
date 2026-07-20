@@ -1,0 +1,1394 @@
+Screens:
+  RequestDetailScreen:
+    Properties:
+      Fill: =RGBA(246, 247, 249, 1)
+      OnVisible: |-
+        =UpdateContext({
+          locRequest: First(AddColumns(Filter(依頼, ID = locSelectedRequestId), StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey)),
+          locShowSatisfaction: false,
+          locSatisfactionValue: 5,
+          locShowEdit: false,
+          locShowDueDateEdit: false
+        })
+    Children:
+      - grpRootDt:
+          Control: GroupContainer
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Horizontal
+            Width: =Parent.Width
+          Children:
+            - grpSideNavDt:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Start
+                  DropShadow: =DropShadow.None
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =4
+                  PaddingBottom: =16
+                  PaddingLeft: =12
+                  PaddingRight: =12
+                  PaddingTop: =16
+                  Width: =220
+                Children:
+                  - txtAppTitleDt:
+                      Control: ModernText
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Color: =RGBA(17, 24, 39, 1)
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        Size: =16
+                        Text: ="改善依頼管理アプリ"
+                        Width: =196
+                  - grpBtnNavHomeDtShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavHomeDt:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="Home"
+                              OnSelect: =Navigate(HomeScreen, ScreenTransition.None)
+                              Text: ="ホーム"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavListDtShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavListDt:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Height: =44
+                              Icon: ="DocumentBulletList"
+                              OnSelect: |-
+                                =Navigate(RequestListScreen, ScreenTransition.None, { locMyRequestsOnly: false })
+                              Text: ="依頼一覧"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavFormDtShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavFormDt:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="Add"
+                              OnSelect: =Navigate(RequestFormScreen, ScreenTransition.None)
+                              Text: ="依頼登録"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavDashboardDtShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavDashboardDt:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="PulseSquare"
+                              OnSelect: =Navigate(DashboardScreen, ScreenTransition.None)
+                              Text: ="ダッシュボード"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavMasterDtShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavMasterDt:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="Settings"
+                              OnSelect: =Navigate(MasterManagementScreen, ScreenTransition.None)
+                              Text: ="マスタ管理"
+                              Width: =196
+                              X: =0
+                              Y: =0
+            - grpMainDt:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Start
+                  DropShadow: =DropShadow.None
+                  FillPortions: =0
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =12
+                  PaddingBottom: =24
+                  PaddingLeft: =24
+                  PaddingRight: =24
+                  PaddingTop: =24
+                  Width: =Parent.Width - 220
+                Children:
+                  - grpBtnBackShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =40
+                        Width: =140
+                      Children:
+                        - btnBack:
+                            Control: ModernButton
+                            Properties:
+                              Appearance: =ButtonAppearance.Transparent
+                              Height: =40
+                              OnSelect: |-
+                                =Navigate(RequestListScreen, ScreenTransition.None, { locMyRequestsOnly: false })
+                              Text: ="← 一覧に戻る"
+                              Width: =140
+                              X: =0
+                              Y: =0
+                  - grpDetailBody:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =Parent.Height - 90
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =16
+                        Width: =Parent.Width - 48
+                      Children:
+                        - grpLeftColumn:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              DropShadow: =DropShadow.Semilight
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =3
+                              Height: =Parent.Height - 4
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =10
+                              LayoutMinWidth: =560
+                              LayoutOverflowY: =LayoutOverflow.Scroll
+                              PaddingBottom: =20
+                              PaddingLeft: =20
+                              PaddingRight: =20
+                              PaddingTop: =20
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                            Children:
+                              - grpDetailTitleRow:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =40
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    Width: =Parent.Width - 40
+                                  Children:
+                                    - txtDetailTitle:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Color: =RGBA(17, 24, 39, 1)
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =40
+                                          Size: =20
+                                          Text: =$"REQ-{Text(locRequest.ID, "0000")}　{locRequest.Title}"
+                                          Width: =400
+                                    - grpBtnEditRequestShadow:
+                                        Control: GroupContainer
+                                        Variant: ManualLayout
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          DropShadow: =DropShadow.Semilight
+                                          FillPortions: =0
+                                          Height: =36
+                                          Visible: =locRequest.StatusKey = "NotAccepted" And locRequest.Requester.Email = User().Email
+                                          Width: =100
+                                        Children:
+                                          - btnEditRequest:
+                                              Control: ModernButton
+                                              Properties:
+                                                Appearance: =ButtonAppearance.Outline
+                                                Height: =36
+                                                Icon: ="Edit"
+                                                OnSelect: |-
+                                                  =Reset(inpEditTitle);
+                                                  Reset(ddlEditCategory);
+                                                  Reset(inpEditBody);
+                                                  Reset(dtpEditPreferred);
+                                                  Reset(selEditPriority);
+                                                  Reset(selEditVisibility);
+                                                  UpdateContext({ locShowEdit: true })
+                                                Text: ="編集"
+                                                Width: =100
+                                                X: =0
+                                                Y: =0
+                              - grpStatusRowDt:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =32
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =12
+                                    Width: =Parent.Width - 40
+                                  Children:
+                                    - badgeDetailStatus:
+                                        Control: Badge
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Appearance: =LookUp(StatusThemeMap, StatusKey = locRequest.StatusKey).Appearance
+                                          Content: =locRequest.StatusId.Value
+                                          Height: =28
+                                          ThemeColor: =LookUp(StatusThemeMap, StatusKey = locRequest.StatusKey).ThemeColor
+                                          Width: =90
+                                    - txtDetailMeta:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Color: =RGBA(107, 114, 128, 1)
+                                          Height: =30
+                                          Size: =13
+                                          Text: |-
+                                            =$"依頼者: {locRequest.Requester.DisplayName}　担当者: {If(IsBlank(locRequest.Assignee), "未割当", locRequest.Assignee.DisplayName)}"
+                                          Width: =400
+                              - txtDetailFields:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    Color: =RGBA(55, 65, 81, 1)
+                                    Height: =50
+                                    Size: =13
+                                    Text: |-
+                                      =$"カテゴリ: {locRequest.CategoryId.Value}　優先度: {locRequest.PriorityId.Value}　公開範囲: {locRequest.Visibility.Value}" & Char(10) & $"登録日: {Text(locRequest.Created, "yyyy/mm/dd")}　対応期限: {Text(locRequest.DueDate, "yyyy/mm/dd")}"
+                                    Width: =Parent.Width - 40
+                              - grpBtnEditDueDateShadow:
+                                  Control: GroupContainer
+                                  Variant: ManualLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    DropShadow: =DropShadow.Semilight
+                                    FillPortions: =0
+                                    Height: =36
+                                    Visible: =locRequest.StatusKey = "InProgress" And locRequest.Assignee.Email = User().Email And !locShowDueDateEdit
+                                    Width: =160
+                                  Children:
+                                    - btnEditDueDate:
+                                        Control: ModernButton
+                                        Properties:
+                                          Appearance: =ButtonAppearance.Transparent
+                                          Height: =36
+                                          Icon: ="Edit"
+                                          OnSelect: |-
+                                            =Reset(dtpEditDueDate);
+                                            UpdateContext({ locShowDueDateEdit: true })
+                                          Text: ="対応期限を変更"
+                                          Width: =160
+                                          X: =0
+                                          Y: =0
+                              - grpDueDateEditRow:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =40
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =8
+                                    Visible: =locShowDueDateEdit = true And locRequest.StatusKey = "InProgress" And locRequest.Assignee.Email = User().Email
+                                    Width: =Parent.Width - 40
+                                  Children:
+                                    - dtpEditDueDate:
+                                        Control: ModernDatePicker
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          DefaultDate: =locRequest.DueDate
+                                          Height: =36
+                                          Width: =150
+                                    - grpBtnSaveDueDateShadow:
+                                        Control: GroupContainer
+                                        Variant: ManualLayout
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          DropShadow: =DropShadow.Semilight
+                                          FillPortions: =0
+                                          Height: =36
+                                          Width: =90
+                                        Children:
+                                          - btnSaveDueDate:
+                                              Control: ModernButton
+                                              Properties:
+                                                Height: =36
+                                                OnSelect: |-
+                                                  =IfError(
+                                                    UpdateContext({
+                                                      locRequest: AddColumns(
+                                                        Patch(依頼, LookUp(依頼, ID = locRequest.ID), { DueDate: dtpEditDueDate.SelectedDate }),
+                                                        StatusKey,
+                                                        locRequest.StatusKey
+                                                      ),
+                                                      locShowDueDateEdit: false
+                                                    });
+                                                    Notify("対応期限を更新しました。", NotificationType.Success),
+                                                    Notify("対応期限の更新に失敗しました。", NotificationType.Error, 5000)
+                                                  )
+                                                Text: ="保存"
+                                                Width: =90
+                                                X: =0
+                                                Y: =0
+                                    - grpBtnCancelDueDateEditShadow:
+                                        Control: GroupContainer
+                                        Variant: ManualLayout
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          DropShadow: =DropShadow.Semilight
+                                          FillPortions: =0
+                                          Height: =36
+                                          Width: =100
+                                        Children:
+                                          - btnCancelDueDateEdit:
+                                              Control: ModernButton
+                                              Properties:
+                                                Appearance: =ButtonAppearance.Outline
+                                                Height: =36
+                                                OnSelect: |-
+                                                  =UpdateContext({ locShowDueDateEdit: false })
+                                                Text: ="キャンセル"
+                                                Width: =100
+                                                X: =0
+                                                Y: =0
+                              - txtBodyLabel:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    Color: =RGBA(17, 24, 39, 1)
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =30
+                                    Size: =13
+                                    Text: ="依頼内容"
+                                    Width: =Parent.Width - 40
+                              - txtBodyValue:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    Color: =RGBA(55, 65, 81, 1)
+                                    Height: =60
+                                    Size: =14
+                                    Text: =locRequest.RequestBody
+                                    Width: =Parent.Width - 40
+                              - txtResponseLabel:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    Color: =RGBA(17, 24, 39, 1)
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =30
+                                    Size: =13
+                                    Text: ="対応内容"
+                                    Width: =Parent.Width - 40
+                              - txtResponseValue:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    Color: =RGBA(55, 65, 81, 1)
+                                    Height: =50
+                                    Size: =14
+                                    Text: =If(IsBlank(locRequest.ResponseContent), "（未記入）", locRequest.ResponseContent)
+                                    Width: =Parent.Width - 40
+                              - txtAttachmentLabel:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    Color: =RGBA(17, 24, 39, 1)
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =30
+                                    Size: =13
+                                    Text: ="添付ファイル"
+                                    Width: =Parent.Width - 40
+                              - grpBtnAttachmentFileShadow:
+                                  Control: GroupContainer
+                                  Variant: ManualLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    DropShadow: =DropShadow.Semilight
+                                    FillPortions: =0
+                                    Height: =36
+                                    Width: =360
+                                  Children:
+                                    - btnAttachmentFile:
+                                        Control: ModernButton
+                                        Properties:
+                                          Align: =Align.Left
+                                          Appearance: =ButtonAppearance.Transparent
+                                          Height: =36
+                                          Icon: ="DocumentPdf"
+                                          OnSelect: =Notify("モックのため、添付ファイルのダウンロードは動作しません。", NotificationType.Information, 3000)
+                                          Text: ="ログイン運用調査メモ.pdf（1.2MB）"
+                                          Width: =360
+                                          X: =0
+                                          Y: =0
+                              - txtSatisfactionValueDt:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    Color: =RGBA(107, 114, 128, 1)
+                                    Height: =30
+                                    Size: =13
+                                    Text: |-
+                                      =$"満足度: {locRequest.SatisfactionScore} / 5"
+                                    Visible: =locRequest.StatusKey = "Completed"
+                                    Width: =Parent.Width - 40
+                              - txtHistoryLabel:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    Color: =RGBA(17, 24, 39, 1)
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =30
+                                    Size: =13
+                                    Text: ="ステータス変更履歴"
+                                    Width: =Parent.Width - 40
+                              - txtHistoryValue:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    Color: =RGBA(107, 114, 128, 1)
+                                    Height: =30
+                                    Size: =13
+                                    Text: |-
+                                      =With(
+                                        { locLatestHistory: First(Sort(Filter(ステータス変更履歴, RequestId.Id = locRequest.ID), Created, SortOrder.Descending)) },
+                                        If(
+                                          IsBlank(locLatestHistory),
+                                          $"登録（{locRequest.StatusId.Value}） {Text(locRequest.Created, "yyyy/mm/dd")}",
+                                          $"{locLatestHistory.FromStatusId.Value} → {locLatestHistory.ToStatusId.Value}　{Text(locLatestHistory.Created, "yyyy/mm/dd hh:mm")}（{locLatestHistory.Author.DisplayName}）　→　現在：{locRequest.StatusId.Value}"
+                                        )
+                                      )
+                                    Width: =Parent.Width - 40
+                              - grpActionButtons:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =44
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =10
+                                    Width: =Parent.Width - 40
+                                  Children:
+                                    - grpBtnAcceptShadow:
+                                        Control: GroupContainer
+                                        Variant: ManualLayout
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          DropShadow: =DropShadow.Semilight
+                                          FillPortions: =0
+                                          Height: =40
+                                          Visible: =locRequest.StatusKey = "NotAccepted"
+                                          Width: =110
+                                        Children:
+                                          - btnAccept:
+                                              Control: ModernButton
+                                              Properties:
+                                                Height: =40
+                                                OnSelect: |-
+                                                  =IfError(
+                                                    With(
+                                                      { locNewStatus: LookUp(ステータスマスタ, StatusKey = "Accepted") },
+                                                      Patch(
+                                                        依頼,
+                                                        LookUp(依頼, ID = locRequest.ID),
+                                                        {
+                                                          StatusId: { Id: locNewStatus.ID, Value: locNewStatus.Title },
+                                                          Assignee: {
+                                                            Claims: "i:0#.f|membership|" & Lower(User().Email),
+                                                            Department: "",
+                                                            DisplayName: User().FullName,
+                                                            Email: User().Email,
+                                                            JobTitle: "",
+                                                            Picture: ""
+                                                          }
+                                                        }
+                                                      );
+                                                      Collect(
+                                                        ステータス変更履歴,
+                                                        {
+                                                          RequestId: { Id: locRequest.ID, Value: locRequest.Title },
+                                                          FromStatusId: { Id: locRequest.StatusId.Id, Value: locRequest.StatusId.Value },
+                                                          ToStatusId: { Id: locNewStatus.ID, Value: locNewStatus.Title }
+                                                        }
+                                                      );
+                                                      UpdateContext({
+                                                        locRequest: First(AddColumns(Filter(依頼, ID = locRequest.ID), StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey))
+                                                      });
+                                                      Notify("受付済みにしました。", NotificationType.Success)
+                                                    ),
+                                                    UpdateContext({
+                                                      locRequest: First(AddColumns(Filter(依頼, ID = locRequest.ID), StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey))
+                                                    });
+                                                    Notify("更新に失敗しました。最新の状態を再取得しました。", NotificationType.Warning)
+                                                  )
+                                                Text: ="受付する"
+                                                Width: =110
+                                                X: =0
+                                                Y: =0
+                                    - grpBtnCancelRequestShadow:
+                                        Control: GroupContainer
+                                        Variant: ManualLayout
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          DropShadow: =DropShadow.Semilight
+                                          FillPortions: =0
+                                          Height: =40
+                                          Visible: =locRequest.StatusKey = "NotAccepted" And locRequest.Requester.Email = User().Email
+                                          Width: =100
+                                        Children:
+                                          - btnCancelRequest:
+                                              Control: ModernButton
+                                              Properties:
+                                                Appearance: =ButtonAppearance.Outline
+                                                Height: =40
+                                                OnSelect: |-
+                                                  =IfError(
+                                                    With(
+                                                      { locNewStatus: LookUp(ステータスマスタ, StatusKey = "Cancelled") },
+                                                      Patch(
+                                                        依頼,
+                                                        LookUp(依頼, ID = locRequest.ID),
+                                                        { StatusId: { Id: locNewStatus.ID, Value: locNewStatus.Title } }
+                                                      );
+                                                      Collect(
+                                                        ステータス変更履歴,
+                                                        {
+                                                          RequestId: { Id: locRequest.ID, Value: locRequest.Title },
+                                                          FromStatusId: { Id: locRequest.StatusId.Id, Value: locRequest.StatusId.Value },
+                                                          ToStatusId: { Id: locNewStatus.ID, Value: locNewStatus.Title }
+                                                        }
+                                                      );
+                                                      UpdateContext({
+                                                        locRequest: First(AddColumns(Filter(依頼, ID = locRequest.ID), StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey))
+                                                      });
+                                                      Notify("依頼を取り消しました。", NotificationType.Success)
+                                                    ),
+                                                    UpdateContext({
+                                                      locRequest: First(AddColumns(Filter(依頼, ID = locRequest.ID), StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey))
+                                                    });
+                                                    Notify("更新に失敗しました。最新の状態を再取得しました。", NotificationType.Warning)
+                                                  )
+                                                Text: ="取消"
+                                                Width: =100
+                                                X: =0
+                                                Y: =0
+                                    - grpBtnStartShadow:
+                                        Control: GroupContainer
+                                        Variant: ManualLayout
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          DropShadow: =DropShadow.Semilight
+                                          FillPortions: =0
+                                          Height: =40
+                                          Visible: =locRequest.StatusKey = "Accepted" Or locRequest.StatusKey = "Returned" Or locRequest.StatusKey = "OnHold"
+                                          Width: =110
+                                        Children:
+                                          - btnStart:
+                                              Control: ModernButton
+                                              Properties:
+                                                Height: =40
+                                                OnSelect: |-
+                                                  =IfError(
+                                                    With(
+                                                      { locNewStatus: LookUp(ステータスマスタ, StatusKey = "InProgress") },
+                                                      Patch(
+                                                        依頼,
+                                                        LookUp(依頼, ID = locRequest.ID),
+                                                        { StatusId: { Id: locNewStatus.ID, Value: locNewStatus.Title } }
+                                                      );
+                                                      Collect(
+                                                        ステータス変更履歴,
+                                                        {
+                                                          RequestId: { Id: locRequest.ID, Value: locRequest.Title },
+                                                          FromStatusId: { Id: locRequest.StatusId.Id, Value: locRequest.StatusId.Value },
+                                                          ToStatusId: { Id: locNewStatus.ID, Value: locNewStatus.Title }
+                                                        }
+                                                      );
+                                                      UpdateContext({
+                                                        locRequest: First(AddColumns(Filter(依頼, ID = locRequest.ID), StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey))
+                                                      });
+                                                      Notify("対応を開始しました。", NotificationType.Success)
+                                                    ),
+                                                    UpdateContext({
+                                                      locRequest: First(AddColumns(Filter(依頼, ID = locRequest.ID), StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey))
+                                                    });
+                                                    Notify("更新に失敗しました。最新の状態を再取得しました。", NotificationType.Warning)
+                                                  )
+                                                Text: ="対応開始"
+                                                Width: =110
+                                                X: =0
+                                                Y: =0
+                                    - grpBtnHoldShadow:
+                                        Control: GroupContainer
+                                        Variant: ManualLayout
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          DropShadow: =DropShadow.Semilight
+                                          FillPortions: =0
+                                          Height: =40
+                                          Visible: =locRequest.StatusKey = "Accepted" Or locRequest.StatusKey = "InProgress"
+                                          Width: =100
+                                        Children:
+                                          - btnHold:
+                                              Control: ModernButton
+                                              Properties:
+                                                Appearance: =ButtonAppearance.Outline
+                                                Height: =40
+                                                OnSelect: |-
+                                                  =IfError(
+                                                    With(
+                                                      { locNewStatus: LookUp(ステータスマスタ, StatusKey = "OnHold") },
+                                                      Patch(
+                                                        依頼,
+                                                        LookUp(依頼, ID = locRequest.ID),
+                                                        { StatusId: { Id: locNewStatus.ID, Value: locNewStatus.Title } }
+                                                      );
+                                                      Collect(
+                                                        ステータス変更履歴,
+                                                        {
+                                                          RequestId: { Id: locRequest.ID, Value: locRequest.Title },
+                                                          FromStatusId: { Id: locRequest.StatusId.Id, Value: locRequest.StatusId.Value },
+                                                          ToStatusId: { Id: locNewStatus.ID, Value: locNewStatus.Title }
+                                                        }
+                                                      );
+                                                      UpdateContext({
+                                                        locRequest: First(AddColumns(Filter(依頼, ID = locRequest.ID), StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey))
+                                                      });
+                                                      Notify("保留にしました。", NotificationType.Warning)
+                                                    ),
+                                                    UpdateContext({
+                                                      locRequest: First(AddColumns(Filter(依頼, ID = locRequest.ID), StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey))
+                                                    });
+                                                    Notify("更新に失敗しました。最新の状態を再取得しました。", NotificationType.Warning)
+                                                  )
+                                                Text: ="保留"
+                                                Width: =100
+                                                X: =0
+                                                Y: =0
+                                    - grpBtnRejectShadow:
+                                        Control: GroupContainer
+                                        Variant: ManualLayout
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          DropShadow: =DropShadow.Semilight
+                                          FillPortions: =0
+                                          Height: =40
+                                          Visible: =locRequest.StatusKey = "Accepted" Or locRequest.StatusKey = "OnHold"
+                                          Width: =110
+                                        Children:
+                                          - btnReject:
+                                              Control: ModernButton
+                                              Properties:
+                                                Appearance: =ButtonAppearance.Outline
+                                                Height: =40
+                                                OnSelect: |-
+                                                  =IfError(
+                                                    With(
+                                                      { locNewStatus: LookUp(ステータスマスタ, StatusKey = "Rejected") },
+                                                      Patch(
+                                                        依頼,
+                                                        LookUp(依頼, ID = locRequest.ID),
+                                                        { StatusId: { Id: locNewStatus.ID, Value: locNewStatus.Title } }
+                                                      );
+                                                      Collect(
+                                                        ステータス変更履歴,
+                                                        {
+                                                          RequestId: { Id: locRequest.ID, Value: locRequest.Title },
+                                                          FromStatusId: { Id: locRequest.StatusId.Id, Value: locRequest.StatusId.Value },
+                                                          ToStatusId: { Id: locNewStatus.ID, Value: locNewStatus.Title }
+                                                        }
+                                                      );
+                                                      UpdateContext({
+                                                        locRequest: First(AddColumns(Filter(依頼, ID = locRequest.ID), StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey))
+                                                      });
+                                                      Notify("対応不可にしました。", NotificationType.Warning)
+                                                    ),
+                                                    UpdateContext({
+                                                      locRequest: First(AddColumns(Filter(依頼, ID = locRequest.ID), StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey))
+                                                    });
+                                                    Notify("更新に失敗しました。最新の状態を再取得しました。", NotificationType.Warning)
+                                                  )
+                                                Text: ="対応不可"
+                                                Width: =110
+                                                X: =0
+                                                Y: =0
+                                    - grpBtnAskConfirmShadow:
+                                        Control: GroupContainer
+                                        Variant: ManualLayout
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          DropShadow: =DropShadow.Semilight
+                                          FillPortions: =0
+                                          Height: =40
+                                          Visible: =locRequest.StatusKey = "InProgress"
+                                          Width: =110
+                                        Children:
+                                          - btnAskConfirm:
+                                              Control: ModernButton
+                                              Properties:
+                                                Height: =40
+                                                OnSelect: |-
+                                                  =IfError(
+                                                    With(
+                                                      { locNewStatus: LookUp(ステータスマスタ, StatusKey = "WaitingConfirmation") },
+                                                      Patch(
+                                                        依頼,
+                                                        LookUp(依頼, ID = locRequest.ID),
+                                                        { StatusId: { Id: locNewStatus.ID, Value: locNewStatus.Title } }
+                                                      );
+                                                      Collect(
+                                                        ステータス変更履歴,
+                                                        {
+                                                          RequestId: { Id: locRequest.ID, Value: locRequest.Title },
+                                                          FromStatusId: { Id: locRequest.StatusId.Id, Value: locRequest.StatusId.Value },
+                                                          ToStatusId: { Id: locNewStatus.ID, Value: locNewStatus.Title }
+                                                        }
+                                                      );
+                                                      UpdateContext({
+                                                        locRequest: First(AddColumns(Filter(依頼, ID = locRequest.ID), StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey))
+                                                      });
+                                                      Notify("依頼者に確認を依頼しました。", NotificationType.Success)
+                                                    ),
+                                                    UpdateContext({
+                                                      locRequest: First(AddColumns(Filter(依頼, ID = locRequest.ID), StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey))
+                                                    });
+                                                    Notify("更新に失敗しました。最新の状態を再取得しました。", NotificationType.Warning)
+                                                  )
+                                                Text: ="確認依頼"
+                                                Width: =110
+                                                X: =0
+                                                Y: =0
+                                    - grpBtnCompleteShadow:
+                                        Control: GroupContainer
+                                        Variant: ManualLayout
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          DropShadow: =DropShadow.Semilight
+                                          FillPortions: =0
+                                          Height: =40
+                                          Visible: =locRequest.StatusKey = "WaitingConfirmation" And locRequest.Requester.Email = User().Email
+                                          Width: =120
+                                        Children:
+                                          - btnComplete:
+                                              Control: ModernButton
+                                              Properties:
+                                                Height: =40
+                                                OnSelect: |-
+                                                  =UpdateContext({ locShowSatisfaction: true })
+                                                Text: ="完了にする"
+                                                Width: =120
+                                                X: =0
+                                                Y: =0
+                                    - grpBtnReturnBackShadow:
+                                        Control: GroupContainer
+                                        Variant: ManualLayout
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          DropShadow: =DropShadow.Semilight
+                                          FillPortions: =0
+                                          Height: =40
+                                          Visible: =locRequest.StatusKey = "WaitingConfirmation" And locRequest.Requester.Email = User().Email
+                                          Width: =110
+                                        Children:
+                                          - btnReturnBack:
+                                              Control: ModernButton
+                                              Properties:
+                                                Appearance: =ButtonAppearance.Outline
+                                                Height: =40
+                                                OnSelect: |-
+                                                  =IfError(
+                                                    With(
+                                                      { locNewStatus: LookUp(ステータスマスタ, StatusKey = "Returned") },
+                                                      Patch(
+                                                        依頼,
+                                                        LookUp(依頼, ID = locRequest.ID),
+                                                        { StatusId: { Id: locNewStatus.ID, Value: locNewStatus.Title } }
+                                                      );
+                                                      Collect(
+                                                        ステータス変更履歴,
+                                                        {
+                                                          RequestId: { Id: locRequest.ID, Value: locRequest.Title },
+                                                          FromStatusId: { Id: locRequest.StatusId.Id, Value: locRequest.StatusId.Value },
+                                                          ToStatusId: { Id: locNewStatus.ID, Value: locNewStatus.Title }
+                                                        }
+                                                      );
+                                                      UpdateContext({
+                                                        locRequest: First(AddColumns(Filter(依頼, ID = locRequest.ID), StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey))
+                                                      });
+                                                      Notify("差し戻しました。", NotificationType.Warning)
+                                                    ),
+                                                    UpdateContext({
+                                                      locRequest: First(AddColumns(Filter(依頼, ID = locRequest.ID), StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey))
+                                                    });
+                                                    Notify("更新に失敗しました。最新の状態を再取得しました。", NotificationType.Warning)
+                                                  )
+                                                Text: ="差し戻す"
+                                                Width: =110
+                                                X: =0
+                                                Y: =0
+                              - txtTerminalNote:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    Color: =RGBA(107, 114, 128, 1)
+                                    Height: =30
+                                    Size: =13
+                                    Text: ="この依頼は終了しています。"
+                                    Visible: =locRequest.StatusKey = "Completed" Or locRequest.StatusKey = "Rejected" Or locRequest.StatusKey = "Cancelled"
+                                    Width: =Parent.Width - 40
+                        - grpRightColumn:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              DropShadow: =DropShadow.Semilight
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =2
+                              Height: =Parent.Height - 4
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =10
+                              LayoutMinWidth: =360
+                              PaddingBottom: =20
+                              PaddingLeft: =20
+                              PaddingRight: =20
+                              PaddingTop: =20
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                            Children:
+                              - txtCommentTitle:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    Color: =RGBA(17, 24, 39, 1)
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =16
+                                    Text: ="コメント"
+                                    Width: =Parent.Width - 40
+                              - galComments:
+                                  Control: Gallery
+                                  Variant: Vertical
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    Height: =Parent.Height - 190
+                                    Items: =Sort(Filter(コメント, RequestId.Id = locRequest.ID), Created, SortOrder.Ascending)
+                                    TemplatePadding: =0
+                                    TemplateSize: =92
+                                    Width: =Parent.Width - 40
+                                  Children:
+                                    - grpCommentTemplate:
+                                        Control: GroupContainer
+                                        Variant: AutoLayout
+                                        Properties:
+                                          DropShadow: =DropShadow.None
+                                          Fill: =If(ThisItem.IsInternalOnly, RGBA(255, 251, 235, 1), RGBA(249, 250, 251, 1))
+                                          Height: =88
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutGap: =2
+                                          PaddingBottom: =8
+                                          PaddingLeft: =10
+                                          PaddingRight: =10
+                                          PaddingTop: =8
+                                          RadiusBottomLeft: =6
+                                          RadiusBottomRight: =6
+                                          RadiusTopLeft: =6
+                                          RadiusTopRight: =6
+                                          Width: =Parent.TemplateWidth
+                                        Children:
+                                          - txtCommentMeta:
+                                              Control: ModernText
+                                              Properties:
+                                                AlignInContainer: =AlignInContainer.Start
+                                                Color: =RGBA(107, 114, 128, 1)
+                                                Height: =27
+                                                Size: =11
+                                                Text: =ThisItem.Author.DisplayName & "　" & Text(ThisItem.Created, "mm/dd hh:mm") & If(ThisItem.IsInternalOnly, "　[社内限定]", "")
+                                                Width: =300
+                                          - txtCommentBody:
+                                              Control: ModernText
+                                              Properties:
+                                                AlignInContainer: =AlignInContainer.Start
+                                                Color: =RGBA(17, 24, 39, 1)
+                                                Height: =56
+                                                Size: =13
+                                                Text: =ThisItem.CommentBody
+                                                Width: =300
+                              - inpNewComment:
+                                  Control: ModernTextInput
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    Height: =60
+                                    Type: =TextInputType.Multiline
+                                    Width: =Parent.Width - 40
+                              - chkInternalOnly:
+                                  Control: CheckBox
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    Height: =28
+                                    Label: ="社内担当者のみ表示"
+                                    Width: =220
+                              - grpBtnPostCommentShadow:
+                                  Control: GroupContainer
+                                  Variant: ManualLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    DropShadow: =DropShadow.Semilight
+                                    FillPortions: =0
+                                    Height: =36
+                                    Width: =100
+                                  Children:
+                                    - btnPostComment:
+                                        Control: ModernButton
+                                        Properties:
+                                          Height: =36
+                                          OnSelect: |-
+                                            =If(
+                                              IsBlank(inpNewComment.Text),
+                                              Notify("コメントを入力してください。", NotificationType.Error),
+                                              IfError(
+                                                Patch(
+                                                  コメント,
+                                                  Defaults(コメント),
+                                                  {
+                                                    RequestId: { Id: locRequest.ID, Value: locRequest.Title },
+                                                    CommentBody: inpNewComment.Text,
+                                                    IsInternalOnly: chkInternalOnly.Checked
+                                                  }
+                                                );
+                                                Reset(inpNewComment);
+                                                Notify("コメントを投稿しました。", NotificationType.Success),
+                                                Notify("コメントの投稿に失敗しました。", NotificationType.Error, 5000)
+                                              )
+                                            )
+                                          Text: ="投稿"
+                                          Width: =100
+                                          X: =0
+                                          Y: =0
+      - grpEditOverlay:
+          Control: GroupContainer
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Fill: =RGBA(0, 0, 0, 0.4)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            Visible: =locShowEdit = true
+            Width: =Parent.Width
+          Children:
+            - grpEditCard:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Center
+                  DropShadow: =DropShadow.Semilight
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =560
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =12
+                  PaddingBottom: =24
+                  PaddingLeft: =24
+                  PaddingRight: =24
+                  PaddingTop: =24
+                  RadiusBottomLeft: =12
+                  RadiusBottomRight: =12
+                  RadiusTopLeft: =12
+                  RadiusTopRight: =12
+                  Width: =480
+                Children:
+                  - txtEditTitle:
+                      Control: ModernText
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Color: =RGBA(17, 24, 39, 1)
+                        FontWeight: =FontWeight.Bold
+                        Height: =37
+                        Size: =18
+                        Text: ="依頼内容を編集"
+                        Width: =432
+                  - txtEditLabelTitle:
+                      Control: ModernText
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Color: =RGBA(17, 24, 39, 1)
+                        FontWeight: =FontWeight.Semibold
+                        Height: =28
+                        Size: =12
+                        Text: ="タイトル"
+                        Width: =432
+                  - inpEditTitle:
+                      Control: ModernTextInput
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Default: =locRequest.Title
+                        Height: =36
+                        MaxLength: =50
+                        Width: =432
+                  - grpEditRowCategoryPriority:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =40
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        Width: =432
+                      Children:
+                        - ddlEditCategory:
+                            Control: ModernDropdown
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              Appearance: =Appearance.Outline
+                              Default: =LookUp(カテゴリマスタ, ID = locRequest.CategoryId.Id)
+                              Height: =40
+                              ItemDisplayText: =ThisItem.Title
+                              Items: =Sort(Filter(カテゴリマスタ, IsActive = true), SortOrder)
+                              Width: =210
+                        - selEditPriority:
+                            Control: ModernRadio
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              Default: =LookUp(優先度マスタ, ID = locRequest.PriorityId.Id)
+                              Height: =32
+                              ItemDisplayText: =ThisItem.Title
+                              Items: |-
+                                =Sort(Filter(優先度マスタ, IsActive = true), SortOrder, SortOrder.Descending)
+                              Layout: =OptionLayout.Horizontal
+                              Width: =210
+                  - txtEditLabelBody:
+                      Control: ModernText
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Color: =RGBA(17, 24, 39, 1)
+                        FontWeight: =FontWeight.Semibold
+                        Height: =28
+                        Size: =12
+                        Text: ="依頼内容"
+                        Width: =432
+                  - inpEditBody:
+                      Control: ModernTextInput
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Default: =locRequest.RequestBody
+                        Height: =100
+                        Type: =TextInputType.Multiline
+                        Width: =432
+                  - grpEditRowPreferredVisibility:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =40
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        Width: =432
+                      Children:
+                        - dtpEditPreferred:
+                            Control: ModernDatePicker
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              DefaultDate: =locRequest.PreferredDate
+                              Height: =40
+                              Width: =150
+                        - selEditVisibility:
+                            Control: ModernRadio
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              Default: |-
+                                ={ Value: locRequest.Visibility.Value }
+                              Height: =32
+                              ItemDisplayText: =Text(ThisItem.Value)
+                              Items: |-
+                                =Table({ Value: "全社" }, { Value: "関係者のみ" })
+                              Layout: =OptionLayout.Horizontal
+                              Width: =260
+                  - grpEditActions:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =44
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutJustifyContent: =LayoutJustifyContent.End
+                        Width: =432
+                      Children:
+                        - grpBtnEditCancelShadow:
+                            Control: GroupContainer
+                            Variant: ManualLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              DropShadow: =DropShadow.Semilight
+                              FillPortions: =0
+                              Height: =40
+                              Width: =120
+                            Children:
+                              - btnEditCancel:
+                                  Control: ModernButton
+                                  Properties:
+                                    Appearance: =ButtonAppearance.Outline
+                                    Height: =40
+                                    OnSelect: |-
+                                      =UpdateContext({ locShowEdit: false })
+                                    Text: ="キャンセル"
+                                    Width: =120
+                                    X: =0
+                                    Y: =0
+                        - grpBtnEditSaveShadow:
+                            Control: GroupContainer
+                            Variant: ManualLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              DropShadow: =DropShadow.Semilight
+                              FillPortions: =0
+                              Height: =40
+                              Width: =120
+                            Children:
+                              - btnEditSave:
+                                  Control: ModernButton
+                                  Properties:
+                                    Height: =40
+                                    OnSelect: |-
+                                      =If(
+                                        IsBlank(inpEditTitle.Text) || IsBlank(ddlEditCategory.Selected.Title) || IsBlank(inpEditBody.Text),
+                                        Notify("必須項目が未入力です。", NotificationType.Error, 5000),
+                                        IfError(
+                                          UpdateContext({
+                                            locRequest: AddColumns(
+                                              Patch(依頼, LookUp(依頼, ID = locRequest.ID), {
+                                                Title: inpEditTitle.Text,
+                                                CategoryId: { Id: ddlEditCategory.Selected.ID, Value: ddlEditCategory.Selected.Title },
+                                                RequestBody: inpEditBody.Text,
+                                                PreferredDate: If(IsBlank(dtpEditPreferred.SelectedDate), Blank(), dtpEditPreferred.SelectedDate),
+                                                PriorityId: { Id: selEditPriority.Selected.ID, Value: selEditPriority.Selected.Title },
+                                                Visibility: { Value: selEditVisibility.Selected.Value }
+                                              }),
+                                              StatusKey,
+                                              locRequest.StatusKey
+                                            ),
+                                            locShowEdit: false
+                                          });
+                                          Notify("依頼内容を更新しました。", NotificationType.Success),
+                                          Notify("更新に失敗しました。", NotificationType.Error, 5000)
+                                        )
+                                      )
+                                    Text: ="保存"
+                                    Width: =120
+                                    X: =0
+                                    Y: =0
+      - grpSatisfactionOverlay:
+          Control: GroupContainer
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Fill: =RGBA(0, 0, 0, 0.4)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            Visible: =locShowSatisfaction = true
+            Width: =Parent.Width
+          Children:
+            - grpSatisfactionCard:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Center
+                  DropShadow: =DropShadow.Semilight
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =220
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =16
+                  PaddingBottom: =24
+                  PaddingLeft: =24
+                  PaddingRight: =24
+                  PaddingTop: =24
+                  RadiusBottomLeft: =12
+                  RadiusBottomRight: =12
+                  RadiusTopLeft: =12
+                  RadiusTopRight: =12
+                  Width: =420
+                Children:
+                  - txtSatisfactionTitle:
+                      Control: ModernText
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Color: =RGBA(17, 24, 39, 1)
+                        FontWeight: =FontWeight.Bold
+                        Size: =16
+                        Text: ="満足度を教えてください"
+                        Width: =372
+                  - ratingSatisfaction:
+                      Control: Rating
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Default: =5
+                        OnChange: |-
+                          =UpdateContext({ locSatisfactionValue: ratingSatisfaction.Value })
+                  - grpSatisfactionActions:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =44
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutJustifyContent: =LayoutJustifyContent.End
+                        Width: =372
+                      Children:
+                        - grpBtnSatisfactionCancelShadow:
+                            Control: GroupContainer
+                            Variant: ManualLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              DropShadow: =DropShadow.Semilight
+                              FillPortions: =0
+                              Height: =40
+                              Width: =110
+                            Children:
+                              - btnSatisfactionCancel:
+                                  Control: ModernButton
+                                  Properties:
+                                    Appearance: =ButtonAppearance.Outline
+                                    Height: =40
+                                    OnSelect: |-
+                                      =UpdateContext({ locShowSatisfaction: false })
+                                    Text: ="キャンセル"
+                                    Width: =110
+                                    X: =0
+                                    Y: =0
+                        - grpBtnSatisfactionSubmitShadow:
+                            Control: GroupContainer
+                            Variant: ManualLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              DropShadow: =DropShadow.Semilight
+                              FillPortions: =0
+                              Height: =40
+                              Width: =120
+                            Children:
+                              - btnSatisfactionSubmit:
+                                  Control: ModernButton
+                                  Properties:
+                                    Height: =40
+                                    OnSelect: |-
+                                      =IfError(
+                                        With(
+                                          { locNewStatus: LookUp(ステータスマスタ, StatusKey = "Completed") },
+                                          Patch(
+                                            依頼,
+                                            LookUp(依頼, ID = locRequest.ID),
+                                            {
+                                              StatusId: { Id: locNewStatus.ID, Value: locNewStatus.Title },
+                                              CompletedDate: Today(),
+                                              SatisfactionScore: locSatisfactionValue
+                                            }
+                                          );
+                                          Collect(
+                                            ステータス変更履歴,
+                                            {
+                                              RequestId: { Id: locRequest.ID, Value: locRequest.Title },
+                                              FromStatusId: { Id: locRequest.StatusId.Id, Value: locRequest.StatusId.Value },
+                                              ToStatusId: { Id: locNewStatus.ID, Value: locNewStatus.Title }
+                                            }
+                                          );
+                                          UpdateContext({
+                                            locRequest: First(AddColumns(Filter(依頼, ID = locRequest.ID), StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey)),
+                                            locShowSatisfaction: false
+                                          });
+                                          Notify("依頼を完了にしました。", NotificationType.Success)
+                                        ),
+                                        UpdateContext({
+                                          locRequest: First(AddColumns(Filter(依頼, ID = locRequest.ID), StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey)),
+                                          locShowSatisfaction: false
+                                        });
+                                        Notify("更新に失敗しました。最新の状態を再取得しました。", NotificationType.Warning)
+                                      )
+                                    Text: ="完了にする"
+                                    Width: =120
+                                    X: =0
+                                    Y: =0

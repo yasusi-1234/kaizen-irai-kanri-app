@@ -1,0 +1,857 @@
+Screens:
+  RequestListScreen:
+    Properties:
+      Fill: =RGBA(246, 247, 249, 1)
+      OnVisible: |-
+        =UpdateContext({
+          locMyOnly: If(locMyRequestsOnly = true, true, false),
+          locOverdueOnly: false,
+          locStatusFilterKey: Blank(),
+          locCategoryFilterTitle: Blank(),
+          locPriorityFilterTitle: Blank(),
+          locHasAssigneeFilter: false
+        });
+        ClearCollect(
+          colRequestFiltered,
+          AddColumns(
+            依頼,
+            RequestId, ID,
+            CategoryTitle, CategoryId.Value,
+            PriorityTitle, PriorityId.Value,
+            StatusTitle, StatusId.Value,
+            StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey,
+            RequesterName, Requester.DisplayName,
+            RequesterEmail, Requester.Email,
+            AssigneeName, Assignee.DisplayName,
+            AssigneeEmail, Assignee.Email
+          )
+        )
+    Children:
+      - grpRootLs:
+          Control: GroupContainer
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Horizontal
+            Width: =Parent.Width
+          Children:
+            - grpSideNavLs:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Start
+                  DropShadow: =DropShadow.None
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =4
+                  PaddingBottom: =16
+                  PaddingLeft: =12
+                  PaddingRight: =12
+                  PaddingTop: =16
+                  Width: =220
+                Children:
+                  - txtAppTitleLs:
+                      Control: ModernText
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Color: =RGBA(17, 24, 39, 1)
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        Size: =16
+                        Text: ="改善依頼管理アプリ"
+                        Width: =196
+                  - grpBtnNavHomeLsShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        Width: =196
+                      Children:
+                        - btnNavHomeLs:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="Home"
+                              OnSelect: =Navigate(HomeScreen, ScreenTransition.None)
+                              Text: ="ホーム"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavListLsShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        Width: =196
+                      Children:
+                        - btnNavListLs:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Height: =44
+                              Icon: ="DocumentBulletList"
+                              OnSelect: |-
+                                =Navigate(RequestListScreen, ScreenTransition.None, { locMyRequestsOnly: false })
+                              Text: ="依頼一覧"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavFormLsShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        Width: =196
+                      Children:
+                        - btnNavFormLs:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="Add"
+                              OnSelect: =Navigate(RequestFormScreen, ScreenTransition.None)
+                              Text: ="依頼登録"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavDashboardLsShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        Width: =196
+                      Children:
+                        - btnNavDashboardLs:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="PulseSquare"
+                              OnSelect: =Navigate(DashboardScreen, ScreenTransition.None)
+                              Text: ="ダッシュボード"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavMasterLsShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        Width: =196
+                      Children:
+                        - btnNavMasterLs:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="Settings"
+                              OnSelect: =Navigate(MasterManagementScreen, ScreenTransition.None)
+                              Text: ="マスタ管理"
+                              Width: =196
+                              X: =0
+                              Y: =0
+            - grpMainLs:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Start
+                  DropShadow: =DropShadow.None
+                  FillPortions: =0
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =16
+                  PaddingBottom: =24
+                  PaddingLeft: =24
+                  PaddingRight: =24
+                  PaddingTop: =24
+                  Width: =Parent.Width - 220
+                Children:
+                  - grpHeaderRowLs:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =48
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        Width: =Parent.Width - 48
+                      Children:
+                        - txtTitleLs:
+                            Control: ModernText
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              Color: =RGBA(17, 24, 39, 1)
+                              FontWeight: =FontWeight.Bold
+                              Height: =46
+                              Size: =24
+                              Text: ="依頼一覧"
+                              Width: =300
+                        - grpBtnNewRequestLsShadow:
+                            Control: GroupContainer
+                            Variant: ManualLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              DropShadow: =DropShadow.Semilight
+                              FillPortions: =0
+                              Height: =40
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              Width: =160
+                            Children:
+                              - btnNewRequestLs:
+                                  Control: ModernButton
+                                  Properties:
+                                    Height: =40
+                                    Icon: ="Add"
+                                    OnSelect: =Navigate(RequestFormScreen, ScreenTransition.None)
+                                    Text: ="新規依頼登録"
+                                    Width: =160
+                                    X: =0
+                                    Y: =0
+                  - grpFilters:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =216
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =10
+                        PaddingBottom: =12
+                        PaddingLeft: =12
+                        PaddingRight: =12
+                        PaddingTop: =12
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width - 48
+                      Children:
+                        - grpFilterRow1:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =104
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =10
+                              Width: =Parent.Width - 24
+                            Children:
+                              - grpFilterItemKeyword:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =66
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =2
+                                    Width: =240
+                                  Children:
+                                    - txtFilterLabelKeyword:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Color: =RGBA(107, 114, 128, 1)
+                                          Height: =28
+                                          Size: =12
+                                          Text: ="キーワード"
+                                          Width: =240
+                                    - inpKeyword:
+                                        Control: ModernTextInput
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Height: =36
+                                          Placeholder: ="タイトル・内容で検索"
+                                          Width: =240
+                              - grpFilterItemStatus:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =66
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =2
+                                    Width: =130
+                                  Children:
+                                    - txtFilterLabelStatus:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Color: =RGBA(107, 114, 128, 1)
+                                          Height: =28
+                                          Size: =12
+                                          Text: ="ステータス"
+                                          Width: =130
+                                    - ddlStatus:
+                                        Control: ModernDropdown
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Appearance: =Appearance.Outline
+                                          Height: =36
+                                          ItemDisplayText: =ThisItem.Title
+                                          Items: |-
+                                            =Sort(ステータスマスタ, SortOrder)
+                                          OnChange: |-
+                                            =UpdateContext({ locStatusFilterKey: ddlStatus.Selected.StatusKey })
+                                          Width: =130
+                              - grpFilterItemCategoryLs:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =66
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =2
+                                    Width: =150
+                                  Children:
+                                    - txtFilterLabelCategoryLs:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Color: =RGBA(107, 114, 128, 1)
+                                          Height: =28
+                                          Size: =12
+                                          Text: ="カテゴリ"
+                                          Width: =154
+                                    - ddlCategoryLs:
+                                        Control: ModernDropdown
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Appearance: =Appearance.Outline
+                                          Height: =36
+                                          ItemDisplayText: =ThisItem.Title
+                                          Items: |-
+                                            =Sort(Filter(カテゴリマスタ, IsActive = true), SortOrder)
+                                          OnChange: |-
+                                            =UpdateContext({ locCategoryFilterTitle: ddlCategoryLs.Selected.Title })
+                                          Width: =150
+                              - grpFilterItemPriority:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =66
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =2
+                                    Width: =110
+                                  Children:
+                                    - txtFilterLabelPriority:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Color: =RGBA(107, 114, 128, 1)
+                                          Height: =28
+                                          Size: =12
+                                          Text: ="優先度"
+                                          Width: =110
+                                    - ddlPriority:
+                                        Control: ModernDropdown
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Appearance: =Appearance.Outline
+                                          Height: =36
+                                          ItemDisplayText: =ThisItem.Title
+                                          Items: |-
+                                            =Sort(Filter(優先度マスタ, IsActive = true), SortOrder)
+                                          OnChange: |-
+                                            =UpdateContext({ locPriorityFilterTitle: ddlPriority.Selected.Title })
+                                          Width: =110
+                              - grpFilterItemAssignee:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =104
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =2
+                                    Width: =130
+                                  Children:
+                                    - txtFilterLabelAssignee:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Color: =RGBA(107, 114, 128, 1)
+                                          Height: =28
+                                          Size: =12
+                                          Text: ="担当者"
+                                          Width: =130
+                                    - inpAssigneeSearch:
+                                        Control: ModernTextInput
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Height: =36
+                                          Placeholder: ="担当者名で検索"
+                                          Width: =130
+                                    - cmbAssigneeFilter:
+                                        Control: ModernCombobox
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Height: =36
+                                          ItemDisplayText: =ThisItem.DisplayName
+                                          Items: |-
+                                            ='Office365ユーザー'.SearchUser({ searchTerm: inpAssigneeSearch.Text, top: 25 })
+                                          OnChange: |-
+                                            =UpdateContext({ locHasAssigneeFilter: CountRows(cmbAssigneeFilter.SelectedItems) > 0 })
+                                          Width: =130
+                              - grpFilterItemSort:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =66
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =2
+                                    Width: =170
+                                  Children:
+                                    - txtFilterLabelSort:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Color: =RGBA(107, 114, 128, 1)
+                                          Height: =28
+                                          Size: =12
+                                          Text: ="並び替え"
+                                          Width: =170
+                                    - ddlSort:
+                                        Control: ModernDropdown
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Appearance: =Appearance.Outline
+                                          Default: |-
+                                            ={ Value: "登録日の新しい順" }
+                                          Height: =36
+                                          ItemDisplayText: =ThisItem.Value
+                                          Items: |-
+                                            =Table({ Value: "登録日の新しい順" }, { Value: "対応期限の近い順" }, { Value: "優先度順" })
+                                          Width: =170
+                        - grpFilterRowDate:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =36
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =8
+                              Width: =Parent.Width - 24
+                            Children:
+                              - txtDueDateRangeLabel:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(55, 65, 81, 1)
+                                    Height: =30
+                                    Size: =13
+                                    Text: ="依頼日"
+                                    Width: =50
+                              - dtpCreatedFrom:
+                                  Control: ModernDatePicker
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Height: =36
+                                    Width: =150
+                              - txtDueDateRangeSep:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(107, 114, 128, 1)
+                                    Height: =30
+                                    Size: =13
+                                    Text: ="〜"
+                                    Width: =20
+                              - dtpCreatedTo:
+                                  Control: ModernDatePicker
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Height: =36
+                                    Width: =150
+                        - grpFilterRow2:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =32
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =20
+                              Width: =Parent.Width - 24
+                            Children:
+                              - chkMyOnly:
+                                  Control: CheckBox
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Checked: =locMyOnly
+                                    Height: =28
+                                    Label: ="自分の依頼のみ"
+                                    OnCheck: |-
+                                      =UpdateContext({ locMyOnly: true })
+                                    OnUncheck: |-
+                                      =UpdateContext({ locMyOnly: false })
+                              - chkOverdueOnly:
+                                  Control: CheckBox
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Checked: =locOverdueOnly
+                                    Height: =28
+                                    Label: ="期限超過のみ"
+                                    OnCheck: |-
+                                      =UpdateContext({ locOverdueOnly: true })
+                                    OnUncheck: |-
+                                      =UpdateContext({ locOverdueOnly: false })
+                              - grpBtnClearFiltersShadow:
+                                  Control: GroupContainer
+                                  Variant: ManualLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    DropShadow: =DropShadow.Semilight
+                                    FillPortions: =0
+                                    Height: =32
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    Width: =150
+                                  Children:
+                                    - btnClearFilters:
+                                        Control: ModernButton
+                                        Properties:
+                                          Appearance: =ButtonAppearance.Outline
+                                          Height: =32
+                                          OnSelect: |-
+                                            =Reset(inpKeyword);
+                                            Reset(ddlStatus);
+                                            Reset(ddlCategoryLs);
+                                            Reset(ddlPriority);
+                                            Reset(inpAssigneeSearch);
+                                            Reset(cmbAssigneeFilter);
+                                            Reset(ddlSort);
+                                            Reset(dtpCreatedFrom);
+                                            Reset(dtpCreatedTo);
+                                            UpdateContext({
+                                              locMyOnly: false,
+                                              locOverdueOnly: false,
+                                              locStatusFilterKey: Blank(),
+                                              locCategoryFilterTitle: Blank(),
+                                              locPriorityFilterTitle: Blank(),
+                                              locHasAssigneeFilter: false
+                                            })
+                                          Text: ="検索条件をクリア"
+                                          Width: =150
+                                          X: =0
+                                          Y: =0
+                  - txtResultCount:
+                      Control: ModernText
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Color: =RGBA(107, 114, 128, 1)
+                        Height: =30
+                        Size: =13
+                        Text: |-
+                          ="検索結果: " & Text(CountRows(Filter(
+                            colRequestFiltered,
+                            (IsBlank(inpKeyword.Text) || inpKeyword.Text in Title || inpKeyword.Text in RequestBody),
+                            (IsBlank(locStatusFilterKey) || StatusKey = locStatusFilterKey),
+                            (IsBlank(locCategoryFilterTitle) || CategoryTitle = locCategoryFilterTitle),
+                            (IsBlank(locPriorityFilterTitle) || PriorityTitle = locPriorityFilterTitle),
+                            (!locHasAssigneeFilter || AssigneeEmail in cmbAssigneeFilter.SelectedItems.Mail),
+                            (!locMyOnly || RequesterEmail = User().Email),
+                            (!locOverdueOnly || (DueDate < Today() && StatusKey <> "Completed" && StatusKey <> "Rejected" && StatusKey <> "Cancelled")),
+                            (IsBlank(dtpCreatedFrom.SelectedDate) || Created >= dtpCreatedFrom.SelectedDate),
+                            (IsBlank(dtpCreatedTo.SelectedDate) || Created <= dtpCreatedTo.SelectedDate)
+                          ))) & " 件"
+                        Width: =300
+                  - grpColumnHeader:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =32
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        PaddingLeft: =12
+                        PaddingRight: =12
+                        Width: =Parent.Width - 48
+                      Children:
+                        - txtColNo:
+                            Control: ModernText
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              Color: =RGBA(107, 114, 128, 1)
+                              FontWeight: =FontWeight.Semibold
+                              Height: =28
+                              Size: =12
+                              Text: ="依頼番号"
+                              Width: =80
+                        - txtColTitle:
+                            Control: ModernText
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              Color: =RGBA(107, 114, 128, 1)
+                              FillPortions: =1
+                              FontWeight: =FontWeight.Semibold
+                              Height: =28
+                              LayoutMinWidth: =220
+                              Size: =12
+                              Text: ="タイトル"
+                        - txtColCategory:
+                            Control: ModernText
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              Color: =RGBA(107, 114, 128, 1)
+                              FontWeight: =FontWeight.Semibold
+                              Height: =28
+                              Size: =12
+                              Text: ="カテゴリ"
+                              Width: =90
+                        - txtColPriority:
+                            Control: ModernText
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              Color: =RGBA(107, 114, 128, 1)
+                              FontWeight: =FontWeight.Semibold
+                              Height: =28
+                              Size: =12
+                              Text: ="優先度"
+                              Width: =60
+                        - txtColStatus:
+                            Control: ModernText
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              Color: =RGBA(107, 114, 128, 1)
+                              FontWeight: =FontWeight.Semibold
+                              Height: =28
+                              Size: =12
+                              Text: ="ステータス"
+                              Width: =90
+                        - txtColRequester:
+                            Control: ModernText
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              Color: =RGBA(107, 114, 128, 1)
+                              FontWeight: =FontWeight.Semibold
+                              Height: =28
+                              Size: =12
+                              Text: ="依頼者"
+                              Width: =80
+                        - txtColAssignee:
+                            Control: ModernText
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              Color: =RGBA(107, 114, 128, 1)
+                              FontWeight: =FontWeight.Semibold
+                              Height: =28
+                              Size: =12
+                              Text: ="担当者"
+                              Width: =80
+                        - txtColCreated:
+                            Control: ModernText
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              Color: =RGBA(107, 114, 128, 1)
+                              FontWeight: =FontWeight.Semibold
+                              Height: =28
+                              Size: =12
+                              Text: ="登録日"
+                              Width: =90
+                        - txtColDue:
+                            Control: ModernText
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              Color: =RGBA(107, 114, 128, 1)
+                              FontWeight: =FontWeight.Semibold
+                              Height: =28
+                              Size: =12
+                              Text: ="対応期限"
+                              Width: =90
+                  - galRequestList:
+                      Control: Gallery
+                      Variant: Vertical
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Height: =Parent.Height - 464
+                        Items: |-
+                          =Sort(
+                            AddColumns(
+                              Filter(
+                                colRequestFiltered,
+                                (IsBlank(inpKeyword.Text) || inpKeyword.Text in Title || inpKeyword.Text in RequestBody),
+                                (IsBlank(locStatusFilterKey) || StatusKey = locStatusFilterKey),
+                                (IsBlank(locCategoryFilterTitle) || CategoryTitle = locCategoryFilterTitle),
+                                (IsBlank(locPriorityFilterTitle) || PriorityTitle = locPriorityFilterTitle),
+                                (!locHasAssigneeFilter || AssigneeEmail in cmbAssigneeFilter.SelectedItems.Mail),
+                                (!locMyOnly || RequesterEmail = User().Email),
+                                (!locOverdueOnly || (DueDate < Today() && StatusKey <> "Completed" && StatusKey <> "Rejected" && StatusKey <> "Cancelled")),
+                                (IsBlank(dtpCreatedFrom.SelectedDate) || Created >= dtpCreatedFrom.SelectedDate),
+                                (IsBlank(dtpCreatedTo.SelectedDate) || Created <= dtpCreatedTo.SelectedDate)
+                              ),
+                              SortKeyNum,
+                              Switch(
+                                ddlSort.Selected.Value,
+                                "対応期限の近い順", DueDate - Date(2000, 1, 1),
+                                "優先度順", -Switch(PriorityTitle, "緊急", 4, "高", 3, "中", 2, "低", 1, 0),
+                                -(Created - Date(2000, 1, 1))
+                              )
+                            ),
+                            SortKeyNum,
+                            SortOrder.Ascending
+                          )
+                        OnSelect: |-
+                          =Navigate(RequestDetailScreen, ScreenTransition.None, { locSelectedRequestId: ThisItem.RequestId })
+                        TemplatePadding: =0
+                        TemplateSize: =46
+                        Width: =Parent.Width - 48
+                      Children:
+                        - grpRowTemplateLs:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =RGBA(229, 231, 235, 1)
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =RGBA(255, 255, 255, 1)
+                              Height: =44
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              PaddingLeft: =12
+                              PaddingRight: =12
+                              Width: =Parent.TemplateWidth
+                            Children:
+                              - txtRowNo:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(107, 114, 128, 1)
+                                    Height: =30
+                                    Size: =13
+                                    Text: =$"REQ-{Text(ThisItem.RequestId, "0000")}"
+                                    Width: =80
+                              - txtRowTitleLs:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(17, 24, 39, 1)
+                                    FillPortions: =1
+                                    Height: =31
+                                    LayoutMinWidth: =220
+                                    Size: =14
+                                    Text: =ThisItem.Title
+                              - txtRowCategory:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(17, 24, 39, 1)
+                                    Height: =30
+                                    Size: =13
+                                    Text: =ThisItem.CategoryTitle
+                                    Width: =90
+                              - txtRowPriority:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(17, 24, 39, 1)
+                                    Height: =30
+                                    Size: =13
+                                    Text: =ThisItem.PriorityTitle
+                                    Width: =60
+                              - badgeRowStatusLs:
+                                  Control: Badge
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Appearance: =LookUp(StatusThemeMap, StatusKey = ThisItem.StatusKey).Appearance
+                                    Content: =ThisItem.StatusTitle
+                                    Height: =26
+                                    ThemeColor: =LookUp(StatusThemeMap, StatusKey = ThisItem.StatusKey).ThemeColor
+                                    Width: =84
+                              - txtRowRequester:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(17, 24, 39, 1)
+                                    Height: =30
+                                    Size: =13
+                                    Text: =ThisItem.RequesterName
+                                    Width: =80
+                              - txtRowAssignee:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(17, 24, 39, 1)
+                                    Height: =30
+                                    Size: =13
+                                    Text: =If(IsBlank(ThisItem.AssigneeName), "未割当", ThisItem.AssigneeName)
+                                    Width: =80
+                              - txtRowCreated:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(107, 114, 128, 1)
+                                    Height: =28
+                                    Size: =12
+                                    Text: =Text(ThisItem.Created, "yyyy/mm/dd")
+                                    Width: =90
+                              - txtRowDueLs:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =If(ThisItem.DueDate < Today() && ThisItem.StatusKey <> "Completed" && ThisItem.StatusKey <> "Rejected" && ThisItem.StatusKey <> "Cancelled", RGBA(220, 38, 38, 1), RGBA(107, 114, 128, 1))
+                                    Height: =28
+                                    Size: =12
+                                    Text: =If(IsBlank(ThisItem.DueDate), "-", Text(ThisItem.DueDate, "yyyy/mm/dd"))
+                                    Width: =90

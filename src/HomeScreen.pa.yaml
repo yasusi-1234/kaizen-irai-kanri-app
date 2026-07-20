@@ -1,0 +1,712 @@
+Screens:
+  HomeScreen:
+    Properties:
+      Fill: =RGBA(246, 247, 249, 1)
+      OnVisible: |-
+        =ClearCollect(
+          colRequestAll,
+          AddColumns(
+            依頼,
+            RequestId, ID,
+            CategoryTitle, CategoryId.Value,
+            PriorityTitle, PriorityId.Value,
+            StatusTitle, StatusId.Value,
+            StatusKey, LookUp(ステータスマスタ, ID = StatusId.Id).StatusKey,
+            RequesterName, Requester.DisplayName,
+            RequesterEmail, Requester.Email,
+            AssigneeName, Assignee.DisplayName,
+            AssigneeEmail, Assignee.Email,
+            VisibilityValue, Visibility.Value
+          )
+        )
+    Children:
+      - grpRootHm:
+          Control: GroupContainer
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Horizontal
+            Width: =Parent.Width
+          Children:
+            - grpSideNavHm:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Start
+                  DropShadow: =DropShadow.None
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =4
+                  PaddingBottom: =16
+                  PaddingLeft: =12
+                  PaddingRight: =12
+                  PaddingTop: =16
+                  Width: =220
+                Children:
+                  - txtAppTitleHm:
+                      Control: ModernText
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        Color: =RGBA(17, 24, 39, 1)
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        Size: =16
+                        Text: ="改善依頼管理アプリ"
+                        Width: =196
+                  - grpBtnNavHomeHmShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavHomeHm:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Height: =44
+                              Icon: ="Home"
+                              OnSelect: =Navigate(HomeScreen, ScreenTransition.None)
+                              Text: ="ホーム"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavListHmShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavListHm:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="DocumentBulletList"
+                              OnSelect: |-
+                                =Navigate(RequestListScreen, ScreenTransition.None, { locMyRequestsOnly: false })
+                              Text: ="依頼一覧"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavFormHmShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavFormHm:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="Add"
+                              OnSelect: =Navigate(RequestFormScreen, ScreenTransition.None)
+                              Text: ="依頼登録"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavDashboardHmShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavDashboardHm:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="PulseSquare"
+                              OnSelect: =Navigate(DashboardScreen, ScreenTransition.None)
+                              Text: ="ダッシュボード"
+                              Width: =196
+                              X: =0
+                              Y: =0
+                  - grpBtnNavMasterHmShadow:
+                      Control: GroupContainer
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        FillPortions: =0
+                        Height: =44
+                        Width: =196
+                      Children:
+                        - btnNavMasterHm:
+                            Control: ModernButton
+                            Properties:
+                              Align: =Align.Left
+                              Appearance: =ButtonAppearance.Subtle
+                              Height: =44
+                              Icon: ="Settings"
+                              OnSelect: =Navigate(MasterManagementScreen, ScreenTransition.None)
+                              Text: ="マスタ管理"
+                              Width: =196
+                              X: =0
+                              Y: =0
+            - grpMainHm:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Start
+                  DropShadow: =DropShadow.None
+                  Height: =Parent.Height
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =20
+                  PaddingBottom: =24
+                  PaddingLeft: =24
+                  PaddingRight: =24
+                  PaddingTop: =24
+                  Width: =Parent.Width - 220
+                Children:
+                  - grpHeaderRowHm:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =56
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        Width: =Parent.Width - 48
+                      Children:
+                        - txtGreeting:
+                            Control: ModernText
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              Color: =RGBA(17, 24, 39, 1)
+                              FontWeight: =FontWeight.Bold
+                              Height: =46
+                              Size: =24
+                              Text: =$"おはようございます、{glbCurrentUserName} さん"
+                              Width: =500
+                        - txtUserInfo:
+                            Control: ModernText
+                            Properties:
+                              Align: =Align.Right
+                              AlignInContainer: =AlignInContainer.Center
+                              Color: =RGBA(107, 114, 128, 1)
+                              Size: =14
+                              Text: =glbCurrentUserName
+                              Width: =260
+                  - grpStatCards:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =114
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =16
+                        Width: =Parent.Width - 48
+                      Children:
+                        - cardMyOpen:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              DropShadow: =DropShadow.Semilight
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =2
+                              Height: =110
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                              LayoutMinWidth: =200
+                              PaddingBottom: =12
+                              PaddingLeft: =16
+                              PaddingRight: =16
+                              PaddingTop: =12
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                            Children:
+                              - icoMyOpenBadgeHm:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(219, 234, 254, 1)
+                                    FillPortions: =0
+                                    Height: =40
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutJustifyContent: =LayoutJustifyContent.Center
+                                    RadiusBottomLeft: =20
+                                    RadiusBottomRight: =20
+                                    RadiusTopLeft: =20
+                                    RadiusTopRight: =20
+                                    Width: =40
+                                  Children:
+                                    - icoMyOpenHm:
+                                        Control: ModernIcon
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Height: =20
+                                          Icon: ="DocumentBulletList"
+                                          IconColor: =RGBA(37, 99, 235, 1)
+                                          Width: =20
+                              - grpMyOpenTextHm:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =86
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                    Width: =Parent.Width - 84
+                                  Children:
+                                    - txtMyOpenLabel:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Color: =RGBA(107, 114, 128, 1)
+                                          Height: =30
+                                          Size: =13
+                                          Text: ="自分の未完了依頼"
+                                          Width: =Parent.Width
+                                    - txtMyOpenValue:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Color: =RGBA(37, 99, 235, 1)
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =52
+                                          Size: =28
+                                          Text: =Text(CountRows(Filter(colRequestAll, RequesterEmail = User().Email, StatusKey <> "Completed", StatusKey <> "Rejected", StatusKey <> "Cancelled")))
+                                          Width: =Parent.Width
+                        - cardMyCompleted:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              DropShadow: =DropShadow.Semilight
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =2
+                              Height: =110
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                              LayoutMinWidth: =200
+                              PaddingBottom: =12
+                              PaddingLeft: =16
+                              PaddingRight: =16
+                              PaddingTop: =12
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                            Children:
+                              - icoMyCompletedBadgeHm:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(220, 252, 231, 1)
+                                    FillPortions: =0
+                                    Height: =40
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutJustifyContent: =LayoutJustifyContent.Center
+                                    RadiusBottomLeft: =20
+                                    RadiusBottomRight: =20
+                                    RadiusTopLeft: =20
+                                    RadiusTopRight: =20
+                                    Width: =40
+                                  Children:
+                                    - icoMyCompletedHm:
+                                        Control: ModernIcon
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Height: =20
+                                          Icon: ="CheckmarkCircle"
+                                          IconColor: =RGBA(22, 163, 74, 1)
+                                          Width: =20
+                              - grpMyCompletedTextHm:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =86
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                    Width: =Parent.Width - 84
+                                  Children:
+                                    - txtMyCompletedLabel:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Color: =RGBA(107, 114, 128, 1)
+                                          Height: =30
+                                          Size: =13
+                                          Text: ="自分の完了依頼"
+                                          Width: =Parent.Width
+                                    - txtMyCompletedValue:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Color: =RGBA(22, 163, 74, 1)
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =52
+                                          Size: =28
+                                          Text: =Text(CountRows(Filter(colRequestAll, RequesterEmail = User().Email, StatusKey = "Completed")))
+                                          Width: =Parent.Width
+                        - cardAssigned:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              DropShadow: =DropShadow.Semilight
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =2
+                              Height: =110
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                              LayoutMinWidth: =200
+                              PaddingBottom: =12
+                              PaddingLeft: =16
+                              PaddingRight: =16
+                              PaddingTop: =12
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                            Children:
+                              - icoAssignedBadgeHm:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(219, 234, 254, 1)
+                                    FillPortions: =0
+                                    Height: =40
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutJustifyContent: =LayoutJustifyContent.Center
+                                    RadiusBottomLeft: =20
+                                    RadiusBottomRight: =20
+                                    RadiusTopLeft: =20
+                                    RadiusTopRight: =20
+                                    Width: =40
+                                  Children:
+                                    - icoAssignedHm:
+                                        Control: ModernIcon
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Height: =20
+                                          Icon: ="Person"
+                                          IconColor: =RGBA(37, 99, 235, 1)
+                                          Width: =20
+                              - grpAssignedTextHm:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =86
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                    Width: =Parent.Width - 84
+                                  Children:
+                                    - txtAssignedLabel:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Color: =RGBA(107, 114, 128, 1)
+                                          Height: =30
+                                          Size: =13
+                                          Text: ="担当中の依頼"
+                                          Width: =Parent.Width
+                                    - txtAssignedValue:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Color: =RGBA(37, 99, 235, 1)
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =52
+                                          Size: =28
+                                          Text: =Text(CountRows(Filter(colRequestAll, AssigneeEmail = User().Email, StatusKey <> "Completed", StatusKey <> "Rejected", StatusKey <> "Cancelled")))
+                                          Width: =Parent.Width
+                        - cardOverdue:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              DropShadow: =DropShadow.Semilight
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =2
+                              Height: =110
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                              LayoutMinWidth: =200
+                              PaddingBottom: =12
+                              PaddingLeft: =16
+                              PaddingRight: =16
+                              PaddingTop: =12
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                            Children:
+                              - icoOverdueBadgeHm:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(254, 226, 226, 1)
+                                    FillPortions: =0
+                                    Height: =40
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutJustifyContent: =LayoutJustifyContent.Center
+                                    RadiusBottomLeft: =20
+                                    RadiusBottomRight: =20
+                                    RadiusTopLeft: =20
+                                    RadiusTopRight: =20
+                                    Width: =40
+                                  Children:
+                                    - icoOverdueHm:
+                                        Control: ModernIcon
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Height: =20
+                                          Icon: ="ClockAlarm"
+                                          IconColor: =RGBA(220, 38, 38, 1)
+                                          Width: =20
+                              - grpOverdueTextHm:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =86
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                    Width: =Parent.Width - 84
+                                  Children:
+                                    - txtOverdueLabelHm:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Color: =RGBA(107, 114, 128, 1)
+                                          Height: =30
+                                          Size: =13
+                                          Text: ="期限超過（自分の依頼／担当中）"
+                                          Width: =Parent.Width
+                                    - txtOverdueValueHm:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Start
+                                          Color: =RGBA(220, 38, 38, 1)
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =46
+                                          Size: =24
+                                          Text: =Text(CountRows(Filter(colRequestAll, RequesterEmail = User().Email, DueDate < Today(), StatusKey <> "Completed", StatusKey <> "Rejected", StatusKey <> "Cancelled"))) & " / " & Text(CountRows(Filter(colRequestAll, AssigneeEmail = User().Email, DueDate < Today(), StatusKey <> "Completed", StatusKey <> "Rejected", StatusKey <> "Cancelled")))
+                                          Width: =Parent.Width
+                  - grpActionRow:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =48
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        Width: =Parent.Width - 48
+                      Children:
+                        - txtMyListTitle:
+                            Control: ModernText
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              Color: =RGBA(17, 24, 39, 1)
+                              FontWeight: =FontWeight.Semibold
+                              Height: =37
+                              Size: =18
+                              Text: ="自分の依頼一覧（直近5件）"
+                              Width: =300
+                        - grpBtnNewRequestShadowHm:
+                            Control: GroupContainer
+                            Variant: ManualLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              DropShadow: =DropShadow.Semilight
+                              FillPortions: =0
+                              Height: =40
+                              Width: =140
+                            Children:
+                              - btnNewRequestHm:
+                                  Control: ModernButton
+                                  Properties:
+                                    Height: =40
+                                    Icon: ="Add"
+                                    OnSelect: =Navigate(RequestFormScreen, ScreenTransition.None)
+                                    Text: ="新規依頼"
+                                    Width: =140
+                                    X: =0
+                                    Y: =0
+                  - grpMyRequestsCard:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        DropShadow: =DropShadow.Semilight
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =358
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =8
+                        PaddingBottom: =16
+                        PaddingLeft: =16
+                        PaddingRight: =16
+                        PaddingTop: =16
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width - 48
+                      Children:
+                        - grpRecentRequestsHeaderHm:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =28
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              PaddingLeft: =12
+                              PaddingRight: =12
+                              Width: =Parent.Width - 32
+                            Children:
+                              - txtRecentColTitleHm:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(107, 114, 128, 1)
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =28
+                                    Size: =12
+                                    Text: ="タイトル"
+                                    Width: =360
+                              - txtRecentColStatusHm:
+                                  Control: ModernText
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(107, 114, 128, 1)
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =28
+                                    Size: =12
+                                    Text: ="ステータス"
+                                    Width: =90
+                              - txtRecentColDueHm:
+                                  Control: ModernText
+                                  Properties:
+                                    Align: =Align.Right
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(107, 114, 128, 1)
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =28
+                                    Size: =12
+                                    Text: ="対応期限"
+                                    Width: =100
+                        - galRecentRequests:
+                            Control: Gallery
+                            Variant: Vertical
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              Fill: =RGBA(255, 255, 255, 1)
+                              Height: =290
+                              Items: =FirstN(Sort(Filter(colRequestAll, RequesterEmail = User().Email), Created, SortOrder.Descending), 5)
+                              OnSelect: |-
+                                =Navigate(RequestDetailScreen, ScreenTransition.None, { locSelectedRequestId: ThisItem.RequestId })
+                              TemplatePadding: =0
+                              TemplateSize: =56
+                              Width: =Parent.Width - 32
+                            Children:
+                              - grpRowTemplateHm:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: =RGBA(229, 231, 235, 1)
+                                    BorderThickness: =1
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(246, 247, 249, 1)
+                                    Height: =48
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    PaddingLeft: =12
+                                    PaddingRight: =12
+                                    Width: =Parent.TemplateWidth
+                                  Children:
+                                    - txtRowTitleHm:
+                                        Control: ModernText
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Color: =RGBA(17, 24, 39, 1)
+                                          Size: =14
+                                          Text: =ThisItem.Title
+                                          Width: =360
+                                    - badgeRowStatusHm:
+                                        Control: Badge
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Appearance: =LookUp(StatusThemeMap, StatusKey = ThisItem.StatusKey).Appearance
+                                          Content: =ThisItem.StatusTitle
+                                          Height: =28
+                                          ThemeColor: =LookUp(StatusThemeMap, StatusKey = ThisItem.StatusKey).ThemeColor
+                                          Width: =90
+                                    - txtRowDueHm:
+                                        Control: ModernText
+                                        Properties:
+                                          Align: =Align.Right
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Color: =RGBA(107, 114, 128, 1)
+                                          Size: =13
+                                          Text: =Text(ThisItem.DueDate, "yyyy/mm/dd")
+                                          Width: =100

@@ -1,0 +1,8 @@
+EditorState:
+  ScreensOrder:
+    - DashboardScreen
+    - HomeScreen
+    - MasterManagementScreen
+    - RequestDetailScreen
+    - RequestFormScreen
+    - RequestListScreen

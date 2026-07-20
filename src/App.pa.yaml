@@ -1,0 +1,20 @@
+App:
+  Properties:
+    Formulas: |-
+      =StatusThemeMap = Table(
+        { StatusKey: "NotAccepted", ThemeColor: 'BadgeCanvas.ThemeColor'.Subtle, Appearance: 'BadgeCanvas.Appearance'.Tint },
+        { StatusKey: "Accepted", ThemeColor: 'BadgeCanvas.ThemeColor'.Informative, Appearance: 'BadgeCanvas.Appearance'.Tint },
+        { StatusKey: "InProgress", ThemeColor: 'BadgeCanvas.ThemeColor'.Brand, Appearance: 'BadgeCanvas.Appearance'.Tint },
+        { StatusKey: "WaitingConfirmation", ThemeColor: 'BadgeCanvas.ThemeColor'.Warning, Appearance: 'BadgeCanvas.Appearance'.Tint },
+        { StatusKey: "Completed", ThemeColor: 'BadgeCanvas.ThemeColor'.Success, Appearance: 'BadgeCanvas.Appearance'.Tint },
+        { StatusKey: "Returned", ThemeColor: 'BadgeCanvas.ThemeColor'.Severe, Appearance: 'BadgeCanvas.Appearance'.Tint },
+        { StatusKey: "OnHold", ThemeColor: 'BadgeCanvas.ThemeColor'.Important, Appearance: 'BadgeCanvas.Appearance'.Tint },
+        { StatusKey: "Rejected", ThemeColor: 'BadgeCanvas.ThemeColor'.Danger, Appearance: 'BadgeCanvas.Appearance'.Tint },
+        { StatusKey: "Cancelled", ThemeColor: 'BadgeCanvas.ThemeColor'.Subtle, Appearance: 'BadgeCanvas.Appearance'.Outline }
+      );
+
+      CurrentUserIsAdmin = !IsBlank(LookUp(アプリ管理者マスタ, AdminUser.Email = User().Email));
+    OnStart: |-
+      =Set(glbCurrentUserName, User().FullName)
+    StartScreen: =HomeScreen
+    Theme: =PowerAppsTheme
