@@ -301,6 +301,7 @@ dtpDueFilter:
 |---|---|---|
 | 画面上の通常のテキスト表示 | `ModernText@1.0.0`（`Size`/`Color`/`FontWeight`を使う） | `Text@0.0.51`は**DataCard専用**のコントロールで、プロパティ体系が異なる（例: `FontWeight`ではなく`Weight`）。通常の画面テキストに使うと大量の「不明なProperty」エラーになる。`Label`もDataCard内部など特別な理由がある場合のみ |
 | アイコン表示（Modern系コントロールの並び） | `ModernIcon@1.1.0`の`Icon`は**文字列**（例: `Icon: ="Home"`）を優先する | `Classic/Icon`の`Icon`は**列挙型**（例: `Icon: =Icon.ChevronRight`）。`ModernIcon`と`Classic/Icon`はプロパティ名は同じ`Icon`でも値の型が違うので混同しない |
+| アイコンの色 | `ModernIcon`は`IconColor` | `ModernText`は`Color`。`ModernIcon`に`Color`は存在せず、`Unknown property`エラーになる。「文字色系プロパティ＝`Color`」と覚えず、コントロールごとに`IconColor`/`Color`/`FontColor`を使い分ける |
 | 通常のテキスト・カード等の背景色 | `GroupContainer`は`Fill` | `ModernButton`に`Fill`は存在しない（ボタンの見た目は`Appearance`/`BasePaletteColor`で調整する） |
 | 文字色 | `ModernText`は`Color` | `Badge`は`FontColor`（`ModernText`には存在しない） |
 | フォントサイズ | `ModernText`は`Size` | `Badge`は`FontSize`（`ModernText`には存在しない） |

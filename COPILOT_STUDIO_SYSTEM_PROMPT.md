@@ -68,6 +68,10 @@
 
 `ItemDisplayText: =ThisItem.Value`のように書く。`="Value"`のような文字列そのものを書くと、コンパイルは通るが実行時に一覧の全項目が空欄になる。
 
+## 10. アイコンの色は`ModernIcon`だけ`IconColor`
+
+`ModernIcon`の色は`Color`ではなく`IconColor`。`ModernText`は`Color`、`Badge`は`FontColor`。コントロールごとに色プロパティ名が違うので、`Color`だと思い込まず使う前に確認する。
+
 ---
 
-書き終えたら、上記9項目を1つずつ見直してから提出すること。
+書き終えたら、上記10項目を1つずつ見直してから提出すること。
