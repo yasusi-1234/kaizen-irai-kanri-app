@@ -1,0 +1,73 @@
+# Power Apps Canvas App YAML生成 - 必須ルール（Copilot Studio 指示文用）
+
+このアプリ（Canvas App）のYAML（.pa.yaml形式）を生成・編集するときは、以下を**必ず**守ること。
+違反してもコンパイルエラーにならない項目が多く、生成後の見た目の崩れとしてしか気づけないため、
+1つコントロールを書くたびに下記のリストと照合してから次に進むこと。
+
+## 1. コントロールは必ずModern系を使う（実装フェーズの画面）
+
+以下の対応を厳守する。右側のコントロールは**「会議用モック」専用の例外**であり、実装フェーズの画面には**絶対に使わない**。コンパイルは通ってしまうため、自分で気づいて避ける必要がある。
+
+| 用途 | 必ず使う | 絶対に使わない（モック専用） |
+|---|---|---|
+| テキスト表示 | `ModernText@1.0.0` | `Label`, `Text@0.0.51`（DataCard専用） |
+| テキスト入力 | `ModernTextInput@1.1.0` | `TextInput`, `Classic/TextInput` |
+| ドロップダウン | `ModernDropdown@1.0.2` | `Classic/DropDown` |
+| 選択肢（検索可・複数） | `ModernCombobox` | `ComboBox`, `Classic/ComboBox` |
+| 日付入力 | `ModernDatePicker@1.0.1` | `DatePicker`, `Classic/DatePicker` |
+| 選択肢（少数） | `ModernRadio` | `CheckBox`, `Classic/Radio` |
+| ボタン | `ModernButton@1.0.0` | `Classic/Button` |
+| アイコン | `ModernIcon@1.1.1` | `Classic/Icon`（Icon値が列挙型必須の場面のみ例外） |
+| ステータス表示 | `Badge` | 色付き`Rectangle`の自作 |
+
+## 2. Control@Versionは1つも省略しない
+
+`GroupContainer@1.5.0`、`ModernText@1.0.0`、`Badge@1.0.0` のように、**すべてのControlに必ずバージョン番号を付ける。** `Badge`のようにバージョンだけ書き忘れるケースが多いので、書き終えたYAML全体を見直して、バージョンが無いControl行が無いか最後に確認する。
+
+## 3. `ModernText`と`Text@0.0.51`を混同しない
+
+画面上の通常のテキストは`ModernText@1.0.0`。プロパティは`Size`/`Color`/`FontWeight`。
+`Text@0.0.51`はDataCard専用で、プロパティ体系が別（`Weight`など）。`Color`は存在しない。
+画面に直接置くテキストで`Weight`や`Color`無しの`FontWeight`不明エラーが出たら、この混同を疑う。
+
+## 4. `FillPortions`は省略しない（`=0`でも明示で書く）
+
+`AutoLayout`コンテナの直下に置くすべての子要素に`FillPortions`を明示で書く。
+
+- 固定サイズにしたい要素 → `FillPortions: =0`
+- 伸縮させたい要素 → `FillPortions: =1`（比率が必要なら`2`,`3`など）
+
+**省略は`=0`と同じ意味にならない。** 省略した要素は兄弟要素とスペースを取り合い、明示した`Height`/`Width`が無視されてはみ出す・高さがずれる。子要素を1つ書くたびに`FillPortions`があるか確認する。
+
+## 5. `ModernTextInput`に`HintText`は存在しない
+
+見た目のヒント文字列は`Placeholder`。`AccessibleLabel`は画面に表示されない（スクリーンリーダー専用）。`HintText`という名前のプロパティ自体が存在しない。
+
+## 6. 子要素が無いコンテナに`Children: []`と書かない
+
+空のフロースタイル配列（`Children: []`）は構文エラーになる。子要素が無いコンテナ（スペーサー等）は`Children`キー自体を省略する。
+
+## 7. `ManualLayout`は既定にしない。`AutoLayout`を既定にする
+
+`ManualLayout`＋絶対`X`/`Y`は、要素を意図的に重ねる場合など限定的な例外のみ。ヘッダー・サイドナビ・カードの並び・テーブルの行のような繰り返し構造は、`AutoLayout`のゾーン分解（`LayoutDirection`/`LayoutGap`）か`Gallery`で組み立てる。右寄せ要素（通知アイコン・ユーザー名など）も、画面幅から逆算した固定`X`にせず、`FillPortions: =1`のスペーサーで押し出す。
+
+## 8. `ModernText`の`Height`は`Size × 1.5 + 10`以上にする
+
+小さすぎる`Height`は、コンパイルは通るが再生モードでのみテキストにスクロールバーが出る（編集画面では気づけない）。数値を決め打ちする前に必ず計算する。
+
+| Size | 最小Height |
+|---|---|
+| 12 | 28 |
+| 14 | 31 |
+| 18 | 37 |
+| 20 | 40 |
+| 24 | 46 |
+| 26 | 49 |
+
+## 9. `ItemDisplayText`は`ThisItem`経由の式にする
+
+`ItemDisplayText: =ThisItem.Value`のように書く。`="Value"`のような文字列そのものを書くと、コンパイルは通るが実行時に一覧の全項目が空欄になる。
+
+---
+
+書き終えたら、上記9項目を1つずつ見直してから提出すること。
