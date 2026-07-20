@@ -102,6 +102,10 @@
 
 `FillPortions`で幅が可変になっている親コンテナ（カードなど）の中に入れる子要素（ラベルなど）は、`Width: =120`のような固定pxにしない。親が狭くなったときに子要素がはみ出す。`Width: =Parent.Width`（親にPaddingがあれば`Parent.Width - Padding分`）のように、親を基準にした式にする。
 
+## 17. `Gallery`に`Layout`というプロパティは存在しない
+
+表示方向（横並び/縦並び）は`Variant`名に既に含まれている（`BrowseLayout_Horizontal_...`＝横並び、`BrowseLayout_Vertical_...`＝縦並び）。`Layout: =Layout.Horizontal`のような追加のプロパティを書かない。方向を変えたいときは`Variant`名自体を変える。
+
 ---
 
-書き終えたら、上記16項目を1つずつ見直してから提出すること。
+書き終えたら、上記17項目を1つずつ見直してから提出すること。

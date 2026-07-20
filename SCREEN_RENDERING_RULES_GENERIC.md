@@ -785,6 +785,7 @@ Screens:
 - 推奨: `X`, `Y`, `TemplatePadding`, `TemplateSize`
 - 重要: GalleryはVariantを必ず指定する。ItemsをGalleryには必ず指定する。モックではTable形式の仮データを使用してよい。Gallery配下の子Controlでは `ThisItem` / `Parent` / `Self` を使用可能。
 - 重要（行間・スクロールバー対策）: `TemplatePadding` は必ず `=0` を明示し、行間は `TemplateSize` と行テンプレートControlの `Height` の差分で作る。詳細は[「Galleryの行間・高さの計算」](#galleryの行間高さの計算templatepadding-に頼らない)を参照。
+- **`Layout`というプロパティは存在しない。** 表示方向（横並び/縦並び）は`Variant`名に既に含まれている（`BrowseLayout_Horizontal_...`＝横並び、`BrowseLayout_Vertical_...`＝縦並び）。`Layout: =Layout.Horizontal`のような追加のプロパティを書かない（`describe_control`で確認済み。`Unknown property`エラーになる）。方向を変えたいときは`Variant`名自体を変える。
 
 ### Label
 - Control: `Label@2.5.1`
