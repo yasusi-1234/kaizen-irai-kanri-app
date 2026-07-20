@@ -130,6 +130,62 @@ grpSidebar:
 
 `ManualLayout`を使ってよいのは、要素同士をあえて重ねたい場合（アイコンの上に小さなバッジを重ねる、背景画像の上にテキストを重ねる等）や、`AutoLayout`のゾーン分解では表現しづらい自由配置が本当に必要な、限定的な場合だけにする。画面の大部分（ヘッダー・サイドナビ・行・カードの並びなど）が`ManualLayout`だらけになっている場合は、設計を見直すサインである。
 
+### ヘッダー行内の右寄せ要素（通知アイコン・ユーザー名など）も絶対座標にしない
+
+画面上部のヘッダーバーで、左にタイトル・右に通知アイコンやユーザー名を配置したい場合、**右側の要素に「想定した画面幅からの引き算」で`X`を決め打ちしない。** 実際に `icoNotification` に `X: =1300`、`txtUserName` に `X: =1360` のような固定座標が使われ、その値は「画面幅1366pxを想定して右端から逆算した位置」だった。画面幅がそれと異なる環境（別解像度、サイドバーの有無など）では右寄せ要素が余白に浮いたり、逆にはみ出したりする。
+
+**正しい手順**: ヘッダー行全体を`AutoLayout`の水平コンテナにし、左側の要素（タイトルなど）と右側の要素（アイコン・ユーザー名など）をそれぞれ別の`GroupContainer`（`LayoutDirection.Horizontal`、`FillPortions: =0`）にまとめた上で、**間に`FillPortions: =1`の空コンテナ（スペーサー）を挟むか、ヘッダー行自体に`LayoutJustifyContent.SpaceBetween`を指定して**両端に押し出す。
+
+```yaml
+# ❌ 右寄せ要素の位置を画面幅から逆算した固定Xで指定（画面幅が変わると崩れる）
+grpAppHeader:
+  Variant: ManualLayout
+  Children:
+    - txtAppTitle:
+        Properties:
+          X: =24
+    - icoNotification:
+        Properties:
+          X: =1300   # ← 1366px幅を想定した決め打ち
+    - txtUserName:
+        Properties:
+          X: =1360   # ← 同上
+
+# ✅ AutoLayout + スペーサー（FillPortions: =1）で右端に押し出す。画面幅に追従する
+grpAppHeader:
+  Control: GroupContainer
+  Variant: AutoLayout
+  Properties:
+    LayoutDirection: =LayoutDirection.Horizontal
+    FillPortions: =0
+    Width: =Parent.Width
+  Children:
+    - txtAppTitle:
+        Properties:
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+    - grpHeaderSpacer:
+        Control: GroupContainer
+        Properties:
+          FillPortions: =1   # 唯一FillPortionsを0以外にする例外。理由: 左右を押し広げる目的
+    - grpHeaderRight:
+        Control: GroupContainer
+        Variant: AutoLayout
+        Properties:
+          LayoutDirection: =LayoutDirection.Horizontal
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+        Children:
+          - icoNotification:
+              Properties:
+                AlignInContainer: =AlignInContainer.Center
+                FillPortions: =0
+          - txtUserName:
+              Properties:
+                AlignInContainer: =AlignInContainer.Center
+                FillPortions: =0
+```
+
 - 水平コンテナ・垂直コンテナ内の要素は `FillPortions` を `0` とする（詳細は[第8章 配置ルール](#配置ルール)）。
 - コンテナ内の要素は `AlignInContainer` を**必ず明示的に指定する**（`Start`など）。指定を省略すると既定値が `Stretch` になり、縦方向・横方向どちらでも意図せず親いっぱいに引き伸ばされることがあるため、「使わない」ではなく「Stretch以外を明示する」で徹底する。
 - コンテナ内に要素を配置する際、意図しない隙間（余白）ができる構成にしない。**これは縦方向（Height）・横方向（Width）の両方に適用する。** 片方だけ気を付けて他方を見落とさないこと（計算方法は[第8章 配置ルール](#配置ルール)）。
@@ -307,6 +363,28 @@ Items: =Table({ Value: "低" }, { Value: "中" }, { Value: "高" })
       Properties:
         FillPortions: =0
         Width: =Parent.Width - 84
+    ```
+  - **`FillPortions` プロパティ自体を書かない（省略する）ことは `=0` と同じ意味にならない。実機で確認済み。** 固定サイズにしたい要素だからと「`FillPortions`は関係ないので書かなくていい」と判断すると、その要素は兄弟要素（`FillPortions`を明示している側）とスペースを分け合ってしまい、意図しない比率で引き伸ばされる。実際に、垂直コンテナ内でヘッダー行（`Height: =60`で固定したいだけの意図）に`FillPortions`を書かず、隣の本体行に`FillPortions: =1`だけ書いたところ、ヘッダーが画面の約半分の高さまで引き伸ばされ、`Height: =60`の指定が無視される崩れが発生した。**固定サイズにしたい要素にも必ず`FillPortions: =0`を明示で書く。「書かない」を選択肢にしない。**
+
+    ```yaml
+    # ❌ ヘッダーはFillPortionsを省略（0のつもりでも0にはならない）→ 本体と半々に引き伸ばされる
+    grpAppHeader:
+      Properties:
+        Height: =60   # ← 無視され、実際は画面の半分近くまで伸びる
+        Fill: =RGBA(37, 99, 235, 1)
+    grpBody:
+      Properties:
+        FillPortions: =1
+
+    # ✅ 固定サイズにしたい要素にも FillPortions: =0 を必ず明示する
+    grpAppHeader:
+      Properties:
+        FillPortions: =0
+        Height: =60
+        Fill: =RGBA(37, 99, 235, 1)
+    grpBody:
+      Properties:
+        FillPortions: =1
     ```
 - **`AlignInContainer` は子要素すべてに明示的に指定する（例: `AlignInContainer.Start`）。省略しない。** Power Appsは未指定の場合の既定値が `Stretch` になることがあり、指定を省略すると縦方向・横方向どちらでも意図せず親いっぱいに引き伸ばされる。「Stretchを使わない」だけでなく「明示的に別の値を書く」ことが必須。子要素は `Width`/`Height` も明示して配置する。
 - **`GroupContainer` は `DropShadow` を必ず明示的に指定する（影が不要なら `DropShadow.None`）。省略しない。** `AlignInContainer` と同様、未指定の場合の既定値が `None`（影なし）とは限らない。`Fill`（背景）を持たないコンテナでも、既定の影が輪郭に沿って表示されることがあるため、「背景が無いから影も見えないはず」という判断はしない。影を意図的に使う要素（カードなど）以外は、すべて `DropShadow.None` を明示する。
@@ -962,6 +1040,7 @@ Screens:
 - [ ] `HtmlViewer` に `HtmlText` があるか
 - [ ] `ManualLayout` 配下のControlに `X`/`Y`/`Width`/`Height` があるか
 - [ ] **画面の大部分（ヘッダー・サイドナビ・カードの並び・テーブルの行など）が`ManualLayout`＋絶対座標だらけになっていないか。** くり返し構造は`AutoLayout`のゾーン分解（または`Gallery`）で組み立てているか
+- [ ] ヘッダー行などの右寄せ要素（通知アイコン・ユーザー名など）の位置を、画面幅から逆算した固定`X`で決め打ちしていないか。`AutoLayout`の水平コンテナ＋`FillPortions: =1`のスペーサー（または`LayoutJustifyContent.SpaceBetween`）で右端に押し出しているか
 - [ ] `ModernTextInput`で見た目のヒント文字列を表示したいのに、`AccessibleLabel`だけを設定して`Placeholder`を設定し忘れていないか
 - [ ] `ModernDropdown`/`ModernCombobox`の`Default`が、`Items`の1行と同じ形のレコードになっているか（文字列だけになっていないか）
 - [ ] 一覧の見出し行とデータ行（`Gallery`のテンプレート）の列幅を、同じ方式（同じ`FillPortions`比率、または同じ計算式の`X`/`Width`）で定義しているか
@@ -976,7 +1055,7 @@ Screens:
 - [ ] コントロール名が第6章のプレフィックス（`ddl`/`dtp`/`sel`/`tab`/`ico`/`cmp` を含む）に沿っているか
 - [ ] 無限スクロールが必要な一覧画面で、読み込み継続用プロパティを `describe_control` で確認したか
 - [ ] `ModernText` の `Height` が `Size` に対して十分か（第9章の表、または `Height ≥ Size × 1.5 + 10`）。テキストにスクロールバーが出ていないか。**`ModernText`を追加・変更したら`compile_canvas`の前に`python scripts/check_moderntext_height.py`を実行し、全画面で違反がないか機械的に確認する**（このルールは編集キャンバスでは症状が出ずPlayモードでしか気づけないため、目視確認だけに頼らない）
-- [ ] 水平・垂直コンテナ内の要素の `FillPortions` が `0` になっているか（例外がある場合は理由をコメントしているか）。**`Width`/`Height` を明示計算していても `FillPortions` が `0` 以外だとその式が無視され隣の要素に重なってはみ出すため、明示`Width`があるからと`FillPortions`の確認を省略しない**
+- [ ] 水平・垂直コンテナ内の**すべての**子要素に `FillPortions: =0` が明示で書かれているか（例外がある場合は理由をコメントしているか）。**固定サイズにしたい要素だからと`FillPortions`自体を省略していないか**を1つずつ確認する。`Width`/`Height` を明示計算していても `FillPortions` が `0` 以外（省略も含む）だとその式が無視され、兄弟要素とスペースを分け合って想定外の比率に引き伸ばされるため、明示`Width`があるからと`FillPortions`の確認を省略しない
 - [ ] `AlignInContainer` がすべての子要素に明示的に指定されているか（省略していないか、`Stretch`になっていないか）
 - [ ] コンテナのサイズと子要素群の合計サイズが、**縦（Height）・横（Width）の両方とも**合っており、意図しない隙間ができていないか
 - [ ] 同じ画面内で縦に並ぶセクション（ヘッダー行・カード行・一覧など）の外側の幅が、他のセクションと揃っているか（1つの行だけ直して終わらせていないか）
