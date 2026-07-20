@@ -72,6 +72,20 @@
 
 `ModernIcon`の色は`Color`ではなく`IconColor`。`ModernText`は`Color`、`Badge`は`FontColor`。コントロールごとに色プロパティ名が違うので、`Color`だと思い込まず使う前に確認する。
 
+## 11. 列挙型（Enum）の完全修飾名を規則性から類推しない
+
+`Appearance`のような同じプロパティ名でも、コントロールごとに列挙型名の書き方が違う。
+
+- `Badge`の`Appearance` → `='BadgeCanvas.Appearance'.Tint`
+- `ModernButton`の`Appearance` → `=ButtonAppearance.Primary`
+- `ModernDropdown`の`Appearance` → `=Appearance.Outline`（プレフィックス無し）
+
+`'ModernControlsCommon.Appearance'`のような、他コントロールの命名から類推した型名を作らない。値の候補（`Outline`など）が同じでも型名は個別に違う。
+
+## 12. コンテナの`Height`は中身の合計を計算してから決める
+
+ラベル(Height28)+入力欄(Height40)+LayoutGap(2)を縦に並べるなら、コンテナの`Height`は最低70必要。`Height:56`のように丸めた数字を先に決めて中身の合計を確認しないと、内部要素がコンテナからはみ出す（コンパイルは通る）。フィルタ欄のように「ラベル＋入力欄」を1セットにした小さいコンテナを複数並べるときは特に、全セットで同じ計算ミスをしていないか確認する。
+
 ---
 
-書き終えたら、上記10項目を1つずつ見直してから提出すること。
+書き終えたら、上記12項目を1つずつ見直してから提出すること。

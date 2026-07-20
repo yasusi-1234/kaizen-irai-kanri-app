@@ -308,6 +308,16 @@ dtpDueFilter:
 | 単一選択の初期値 | `ModernDropdown`は`Default`（`Items`と同じ形のレコード） | `ModernCombobox`は`DefaultSelectedItems`（複数選択用。`ModernDropdown`には存在しない） |
 | 見た目に表示するヒント文字列 | `Placeholder` | `AccessibleLabel`は画面に表示されない（スクリーンリーダー向けの説明文のみ） |
 
+**列挙型（Enum）の完全修飾名は、コントロールごとにプレフィックスの有無・形式がバラバラ。** 同じ「`Appearance`」というプロパティ名でも、`describe_control`で実際に確認したところ次のように型名が全く違った。
+
+| コントロール | `Appearance`の列挙型名 | 書き方の例 |
+|---|---|---|
+| `Badge` | `BadgeCanvas.Appearance` | `='BadgeCanvas.Appearance'.Tint` |
+| `ModernButton` | `ButtonAppearance` | `=ButtonAppearance.Primary` |
+| `ModernDropdown` | `Appearance`（プレフィックス無し） | `=Appearance.Outline` |
+
+**`'ModernControlsCommon.Appearance'`のような、規則性から類推した型名を作らない。** 同じ「値の候補」（`Outline`など）が複数のコントロールで共通していても、型名（プレフィックスを付けるかどうか）は個別に異なる。未確認の列挙型プロパティを書くときは、値の候補だけでなく**型名の完全修飾形式も`describe_control`で確認**してから使う。
+
 ### 最優先で確認すること: サイズは「決め打ち」せず、必ず計算する
 
 **この規約通りの計算式・チェックリストが用意されているにもかかわらず、実機で生成されたYAMLでは、テキストの`Height`もコンテナの`Height`も、計算せずに丸い数字を決め打ちしていた。** その結果、次の2種類の不具合が実際に発生した。
@@ -857,7 +867,7 @@ Screens:
 - **単一選択（`ModernDropdown`）の初期値プロパティは `Default`。** 複数選択が必要な場合は`ModernDropdown`ではなく`ModernCombobox`を使う（初期値プロパティ名もコントロールごとに異なる）。
 - **`Default`は`Items`の1行と同じ形の「レコード」を指定する。文字列だけを指定しない。** `Items`が`Value`列を持つレコードのテーブルなら、`Default`も`={ Value: "すべて" }`のようにレコードにする。`Default: ="すべて"`のように文字列だけを指定すると型が一致せず、初期選択が正しく機能しない。
 - **重要: `Placeholder` プロパティは存在しない**（`ModernTextInput`/`ModernDatePicker`と違い、未選択時に何も表示するものがない）。`Default`のレコードが実際に選択済みとして視覚的に反映されないケースがあり、その場合ドロップダウンが空欄に見えて何のフィルタか利用者にわからなくなる。**フィルタ用途などで複数のドロップダウンを並べる場合は、各ドロップダウンの上（または横）に小さな`ModernText`ラベルを必ず添える**（`Default`の表示に頼らない）。
-- `Appearance`（`FilledDarker`/`FilledLighter`/`Outline`）を明示すること。未指定のままにしない。
+- `Appearance`（`FilledDarker`/`FilledLighter`/`Outline`）を明示すること。未指定のままにしない。**列挙型名は`Appearance`単体（プレフィックス無し）。** `=Appearance.Outline`と書く。`'ModernControlsCommon.Appearance'.Outline`のような存在しない型名を作らない（`describe_control`で確認済み）。
 
 ### ModernCombobox
 - Control: `ModernCombobox@1.1.0`
