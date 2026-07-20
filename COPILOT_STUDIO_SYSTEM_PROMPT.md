@@ -90,6 +90,18 @@
 
 ボタンの背景色は`Fill`ではなく`Appearance`（`Primary`/`Secondary`/`Subtle`など）または`BasePaletteColor`で調整する。`GroupContainer`の背景色プロパティ（`Fill`）と混同しない。
 
+## 14. `ModernIcon`の`Icon`は列挙型ではなく文字列（Text型）
+
+`Icon: =Icon.BulletedList`のような列挙型ドット記法は型不一致でエラーになる。必ず`Icon: ="List"`のように文字列で書く。`Classic/Icon`は列挙型だが`ModernIcon`は違う。
+
+## 15. `FillPortions`が`0`以外の要素に、意味のない`Width`/`Height`の数字を書かない
+
+`FillPortions`が`0`以外の要素は`Width`/`Height`を指定しても無視される。「とりあえず`100`と書く」のような意味の無い値を埋めない。書くなら親の計算式に基づく値にするか、そもそも書かない。
+
+## 16. 可変幅の親コンテナの中の子要素に、固定`Width`を決め打ちしない
+
+`FillPortions`で幅が可変になっている親コンテナ（カードなど）の中に入れる子要素（ラベルなど）は、`Width: =120`のような固定pxにしない。親が狭くなったときに子要素がはみ出す。`Width: =Parent.Width`（親にPaddingがあれば`Parent.Width - Padding分`）のように、親を基準にした式にする。
+
 ---
 
-書き終えたら、上記13項目を1つずつ見直してから提出すること。
+書き終えたら、上記16項目を1つずつ見直してから提出すること。
