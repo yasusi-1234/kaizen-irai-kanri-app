@@ -546,7 +546,7 @@ Screens:
 - 必須: `Text`, `Width`, `Height`
 - 推奨: `X`, `Y`, `Color`, `Font`, `FontWeight`, `Size`, `Visible`
 - 注意: `Text` 未指定は禁止。フォントサイズのプロパティ名は `FontSize` ではなく `Size`（`Badge` は逆に `FontSize` なので混同しない）。
-- **文字色のプロパティ名は `FontColor` ではなく `Color`。** `FontColor` は `Badge` のプロパティで、`ModernText` には存在しない（実際にAIが両者を取り違えてエラーになった実例あり）。
+- **文字色のプロパティ名は `Color`。** サイズが`Size`、色が`Color`——`ModernText`のフォント関連プロパティは短い名前で統一されている（`Badge`は逆に`FontSize`/`FontColor`という長い名前なので、コントロールごとに正しい方を使う）。
 - **注意（スクロールバー回避）**: `Height` が `Size` に対して小さすぎると、テキスト自体に不要なスクロールバーが表示される。**この症状は編集キャンバスでは出ず、再生モード（Play）でだけ出る。** 以前の表は編集キャンバスでの目視で作った値だったため、実際には2〜3px足りず、Playモードでスクロールバーが出るケースが見つかった。以下は `Height ≥ Size × 1.5 + 10` の式から機械的に算出した値（編集画面で足りているように見えても、この値を下回らないこと）:
 
   | Size | 最小 Height |
@@ -624,7 +624,7 @@ Screens:
 - 必須: `Width`, `Height`
 - 推奨: `X`, `Y`, `Default`, `Placeholder`, `AccessibleLabel`, `BasePaletteColor`, `BorderStyle`, `BorderThickness`
 - 使用可能な主なProperties: `AccessibleLabel`, `BasePaletteColor`, `BorderStyle`, `BorderThickness`, `Default`, `Font`, `MaxLength`, `Placeholder`, `Type`, Padding系, Radius系, `Width`, `Height`, `X`, `Y`
-- プレースホルダー文字列は **`Placeholder`**（`HintText`のような名前は存在しない）。複数行入力は `Type: =TextInputType.Multiline`、最大文字数は `MaxLength`。
+- 未入力時のヒント表示は、プロパティ名 **`Placeholder`** に文字列を指定する。複数行入力は `Type: =TextInputType.Multiline`、最大文字数は `MaxLength`。
 
 ### ModernDropdown
 - Control: `ModernDropdown@1.0.1`
@@ -632,7 +632,7 @@ Screens:
 - 推奨: `X`, `Y`, `Default`, `Appearance`, `ItemDisplayText`, `AccessibleLabel`
 - 使用可能な主なProperties: `AccessibleLabel`, `Appearance`, `BasePaletteColor`, `BorderColor`, `BorderStyle`, `BorderThickness`, `Color`, `Default`, `Fill`, `Font`, `ItemDisplayText`, `Items`, Padding系, Radius系, `Width`, `Height`, `X`, `Y`
 - 注意: `Items` 未指定は禁止。`Default` が不明な場合は `Default` を出力しない。`Default: |+ =` のような不正な空値は禁止。
-- **単一選択は `Default`。`DefaultSelectedItems` は `ModernCombobox`（複数選択）専用で、`ModernDropdown`には存在しない。** 実際にAIが両者を取り違えてエラーになった実例あり。
+- **単一選択（`ModernDropdown`）の初期値プロパティは `Default`。** 複数選択が必要な場合は`ModernDropdown`ではなく`ModernCombobox`を使う（初期値プロパティ名もコントロールごとに異なる）。
 - **重要: `Placeholder` プロパティは存在しない**（`ModernTextInput`/`ModernDatePicker`と違い、未選択時に何も表示するものがない）。`Default`のレコードが実際に選択済みとして視覚的に反映されないケースがあり、その場合ドロップダウンが空欄に見えて何のフィルタか利用者にわからなくなる。**フィルタ用途などで複数のドロップダウンを並べる場合は、各ドロップダウンの上（または横）に小さな`ModernText`ラベルを必ず添える**（`Default`の表示に頼らない）。
 - `Appearance`（`FilledDarker`/`FilledLighter`/`Outline`）を明示すること。未指定のままにしない。
 
