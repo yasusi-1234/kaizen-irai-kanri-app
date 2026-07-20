@@ -106,6 +106,19 @@
 
 表示方向（横並び/縦並び）は`Variant`名に既に含まれている（`BrowseLayout_Horizontal_...`＝横並び、`BrowseLayout_Vertical_...`＝縦並び）。`Layout: =Layout.Horizontal`のような追加のプロパティを書かない。方向を変えたいときは`Variant`名自体を変える。
 
+## 18. `ModernDropdown`に`DefaultSelectedItems`は存在しない
+
+`DefaultSelectedItems`は`ModernCombobox`（複数選択）専用。`ModernDropdown`（単一選択）の初期値は`Default`に`Items`と同じ形の**単一レコード**を指定する（`Table`ではない）。
+
+```yaml
+# ❌ ModernComboboxのプロパティ
+DefaultSelectedItems: =Table({Value:"すべて"})
+
+# ✅ ModernDropdownはDefaultに単一レコード
+Default: |-
+  ={ Value: "すべて" }
+```
+
 ---
 
-書き終えたら、上記17項目を1つずつ見直してから提出すること。
+書き終えたら、上記18項目を1つずつ見直してから提出すること。
