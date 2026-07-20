@@ -12,6 +12,10 @@ Power Apps Canvas Appの画面を作成・修正する際に従うルール。AI
 
 > **生成前に必ず確認: 画面上の通常のテキスト表示には `ModernText@1.0.0` を使う。** `Text@0.0.51` は**DataCardの内部専用**コントロールで、プロパティ体系が全く異なり（`Color`/`FontWeight`/`Size`が無く、`Weight`など別名になる）、画面に直接置くと`Unknown property`エラーが大量発生する。**画面に置くテキストコントロールを1つ書くたびに、Controlの値が`ModernText@1.0.0`になっているか（`Text@0.0.51`になっていないか）を確認してから次に進む。** 詳細は[7章の対応表](#最優先で確認すること-似た名前・似た用途のコントロールプロパティの使い分け)。
 
+> **生成前に必ず確認: 実装フェーズの画面では `Label`/`TextInput`/`ComboBox`/`DatePicker` を使わない。** これらは「会議用モック」専用の例外コントロールであり、実装フェーズでは `ModernText`/`ModernTextInput`/`ModernCombobox`または`ModernDropdown`/`ModernDatePicker`を使う。コンパイルは通ってしまう（エラーにならない）ため、生成後の見直しでも気づきにくい。コントロールを1つ配置するたびに、Control名が`Modern`で始まっているか（DataCard内部など明確な例外を除く）を確認する。詳細は[5章のコントロール選定ルール](#5-コントロール選定ルール)。
+
+> **生成前に必ず確認: 水平・垂直コンテナ（`AutoLayout`）の直下に置くすべての子要素に、`FillPortions`を明示で書く（固定サイズにしたい要素は`FillPortions: =0`、伸縮させたい要素だけ`0`以外）。** `FillPortions`を1つでも書き忘れると、その要素は「0」としてではなく兄弟要素とスペースを分け合う扱いになり、明示した`Height`/`Width`が無視されて、はみ出し・詰まり・比率の崩れが起きる。**この崩れはコンパイルエラーにならず、Playモードで初めて見た目の崩れとして現れる。** コンテナの子要素を1つ書くたびに、その子要素に`FillPortions`があるか（無ければ追加し忘れていないか）を確認する。詳細は[8章 配置ルール](#配置ルール)。
+
 ---
 
 # 第1部: デザイン・レイアウトルール
@@ -226,7 +230,29 @@ grpAppHeader:
 | アイコン | `ModernIcon`（Classic Iconの`Icon.XXX`形式が必要な場面のみ`Classic/Icon`） | — |
 | テキスト表示 | `ModernText` | `Label`（DataCard内部など特別な理由がある場合を除く） |
 
-**原則**: `Classic/*` は使わない。同目的の `Modern*` コントロールが存在する場合は必ずそちらを使う。
+**原則**: `Classic/*` は使わない。同目的の `Modern*` コントロールが存在する場合は必ずそちらを使う。**`Label`/`TextInput`/`ComboBox`/`DatePicker`は「モック専用」の例外コントロールであり、実装フェーズの画面には使わない。** コンパイルは通ってしまうため、エラーとして気づけない。コントロールを1つ配置するたびに、上の対応表で「実装フェーズで使うべきもの」になっているかを確認する。
+
+```yaml
+# ❌ 実装フェーズなのにモック専用コントロールを使う（コンパイルは通るが規約違反）
+lblPageTitle:
+  Control: Label@2.5.1
+txtSearch:
+  Control: TextInput@0.0.54
+cmbStatusFilter:
+  Control: ComboBox@0.0.51
+dtpDueFilter:
+  Control: DatePicker@0.0.46
+
+# ✅ 実装フェーズはModern系コントロールを使う
+txtPageTitle:
+  Control: ModernText@1.0.0
+inpSearch:
+  Control: ModernTextInput@1.1.0
+ddlStatusFilter:
+  Control: ModernDropdown@1.0.2
+dtpDueFilter:
+  Control: ModernDatePicker@1.0.1
+```
 
 **コンポーネントの優先利用**: ヘッダー・サイドナビ・ステータスバッジ・確認ダイアログなど繰り返し使うUI要素は、都度 `Gallery`/`GroupContainer` などのプリミティブから組み立て直さず、自プロジェクトのコーディング規約で定義したコンポーネント（例: `cmpHeader`, `cmpSideNav`, `cmpStatusBadge`）を優先して使う。
 
