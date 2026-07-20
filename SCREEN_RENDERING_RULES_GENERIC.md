@@ -859,6 +859,7 @@ Screens:
 - 使用可能な主なProperties: `AccessibleLabel`, `BasePaletteColor`, `BorderStyle`, `BorderThickness`, `Default`, `Font`, `MaxLength`, `Placeholder`, `Type`, Padding系, Radius系, `Width`, `Height`, `X`, `Y`
 - 未入力時のヒント表示は、プロパティ名 **`Placeholder`** に文字列を指定する（例: `Placeholder: ="キーワードで検索"`）。複数行入力にする場合は `Type: =TextInputType.Multiline`、最大文字数は `MaxLength` で指定する。
 - **`AccessibleLabel`は画面には表示されない。** スクリーンリーダー向けの説明文だけを設定するプロパティであり、視覚的なヒント文字列にはならない。検索欄などで「何を入力する欄か」を見た目にも示したい場合は、`AccessibleLabel`だけを設定して満足せず、必ず`Placeholder`も設定する（`AccessibleLabel`しか設定しないと、コンパイルは通るが画面には何も表示されず、コントロールの既定のヒント文言のままになる。見た目に現れないため気づきにくい）。
+- **`ModernTextInput`に`HintText`というプロパティは存在しない。** 他のUIフレームワークでよく使われる名前につられて`HintText`を書いてしまい、`Unknown property`エラーになるケースが複数回発生している。ヒント文字列のプロパティ名は`Placeholder`の1つだけと覚える。
 
 ### ModernDropdown
 - Control: `ModernDropdown@1.0.1`
