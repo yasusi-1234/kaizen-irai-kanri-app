@@ -542,7 +542,7 @@ galItemList:
 
 ## 9. コントロール仕様リファレンス
 
-**Control@Versionの信頼性について**: 以下の `Control@Version` は過去のプロジェクトでの実績値であり、新しい環境で検証済みとは限らない。バージョン不一致は `compile_canvas` 実行時にエラーとして顕在化するため、エラーが出た場合はその時点の正しい値でこの章を更新する。
+**Control@Versionの信頼性について**: 以下の `Control@Version` は過去のプロジェクトでの実績値であり、新しい環境で検証済みとは限らない。**同じPower Platformでも、環境・テナントによって実際に使えるコントロールのバージョンが異なることを実機で確認済み**（例: 同じ`ModernTextInput`でも環境によって`1.1.0`だったり`0.0.54`だったりする）。バージョン不一致自体は警告どまりで大きな問題にならないことが多いが、**バージョンが変わると使えるProperty名も変わっている場合がある**ため、以下の一覧をそのまま信用せず、可能であれば実装前にその環境の`describe_control`（またはPower Apps Studioの詳細ペイン）で実際のProperty名を確認する。特に「似た名前の兄弟コントロール」間でのProperty名の取り違え（`ModernText`の`Color`と`Badge`の`FontColor`、`ModernDropdown`の`Default`と`ModernCombobox`の`DefaultSelectedItems`など）は実際にエラーとして発生しているので注意する。バージョン不一致・Property不一致でエラーが出た場合は、その時点の正しい値でこの章を更新する。
 
 ### Screen
 - 使用可能な主なProperties: `LoadingSpinnerColor`
@@ -582,6 +582,7 @@ Screens:
 - 必須: `Text`, `Width`, `Height`
 - 推奨: `X`, `Y`, `Color`, `Font`, `FontWeight`, `Size`, `Visible`
 - 注意: `Text` 未指定は禁止。フォントサイズのプロパティ名は `FontSize` ではなく `Size`（`Badge` は逆に `FontSize` なので混同しない）。
+- **文字色のプロパティ名は `FontColor` ではなく `Color`。** `FontColor` は `Badge` のプロパティで、`ModernText` には存在しない（実際にAIが両者を取り違えてエラーになった実例あり）。「`Badge`は`Font`系の名前（`FontSize`/`FontColor`）、`ModernText`は`Size`/`Color`」と対で覚える。
 - **注意（スクロールバー回避）**: `Height` が `Size` に対して小さすぎると、テキスト自体に不要なスクロールバーが表示される。**この症状は編集キャンバスでは出ず、再生モード（Play）でだけ出る。** 編集キャンバスでの目視だけで値を決めると、実際には2〜3px足りず、Playモードでスクロールバーが出るケースがある。以下は `Height ≥ Size × 1.5 + 10` の式から機械的に算出した値（編集画面で足りているように見えても、この値を下回らないこと）:
 
   | Size | 最小 Height |
@@ -657,10 +658,11 @@ Screens:
 - 一覧の行の中の小さなアイコンボタン（有効/無効トグル、削除ボタンなど）は、密集したテーブル行の中で個別に影を付けると見た目がうるさくなることがある。影を付けるかどうかは一律に決めず、実際の見た目で判断する（テーブル行内のボタンは影なしのままにする、という判断も妥当）。
 
 ### ModernTextInput
-- Control: `ModernTextInput@1.1.0`
+- Control: `ModernTextInput@1.1.0`（環境によっては`0.0.54`など別バージョンの場合がある。実装前に`describe_control`で確認する）
 - 必須: `Width`, `Height`
-- 推奨: `X`, `Y`, `Default`, `AccessibleLabel`, `BasePaletteColor`, `BorderStyle`, `BorderThickness`
-- 使用可能な主なProperties: `AccessibleLabel`, `BasePaletteColor`, `BorderStyle`, `BorderThickness`, `Default`, `Font`, Padding系, Radius系, `Width`, `Height`, `X`, `Y`
+- 推奨: `X`, `Y`, `Default`, `Placeholder`, `AccessibleLabel`, `BasePaletteColor`, `BorderStyle`, `BorderThickness`
+- 使用可能な主なProperties: `AccessibleLabel`, `BasePaletteColor`, `BorderStyle`, `BorderThickness`, `Default`, `Font`, `MaxLength`, `Placeholder`, `Type`, Padding系, Radius系, `Width`, `Height`, `X`, `Y`
+- プレースホルダー文字列（未入力時のヒント表示）は **`Placeholder`**（`HintText`のような名前は存在しない）。複数行入力にする場合は `Type: =TextInputType.Multiline`、最大文字数は `MaxLength` で指定する。
 
 ### ModernDropdown
 - Control: `ModernDropdown@1.0.1`
@@ -668,6 +670,7 @@ Screens:
 - 推奨: `X`, `Y`, `Default`, `Appearance`, `ItemDisplayText`, `AccessibleLabel`
 - 使用可能な主なProperties: `AccessibleLabel`, `Appearance`, `BasePaletteColor`, `BorderColor`, `BorderStyle`, `BorderThickness`, `Color`, `Default`, `Fill`, `Font`, `ItemDisplayText`, `Items`, Padding系, Radius系, `Width`, `Height`, `X`, `Y`
 - 注意: `Items` 未指定は禁止。`Default` が不明な場合は `Default` を出力しない。`Default: |+ =` のような不正な空値は禁止。
+- **単一選択は `Default`、複数選択の初期値`DefaultSelectedItems`は`ModernDropdown`には存在しない。** `DefaultSelectedItems` は `ModernCombobox`（複数選択）専用のプロパティで、`ModernDropdown`（単一選択）に書くとエラーになる（実際にAIが両者を取り違えてエラーになった実例あり）。単一選択の`ModernDropdown`か複数選択の`ModernCombobox`か、選択方式に応じて正しいコントロール・正しいプロパティ名を選ぶ。
 - **重要: `Placeholder` プロパティは存在しない**（`ModernTextInput`/`ModernDatePicker`と違い、未選択時に何も表示するものがない）。`Default`のレコードが実際に選択済みとして視覚的に反映されないケースがあり、その場合ドロップダウンが空欄に見えて何のフィルタか利用者にわからなくなる。**フィルタ用途などで複数のドロップダウンを並べる場合は、各ドロップダウンの上（または横）に小さな`ModernText`ラベルを必ず添える**（`Default`の表示に頼らない）。
 - `Appearance`（`FilledDarker`/`FilledLighter`/`Outline`）を明示すること。未指定のままにしない。
 
@@ -927,7 +930,7 @@ Screens:
 - [ ] `ModernDropdown`/`ModernCombobox`の「未選択」判定を、`OnChange`で更新する明示的な`loc`変数で行っているか（コントロール自身の`Selected`/`SelectedItems`を直接判定に使っていないか）
 - [ ] `ModernTabList` に `Alignment`/`Appearance`/`TabSize` を明示しているか（省略するとタブが小さな点にしか見えないことがある）
 - [ ] `ItemDisplayText` が `=ThisItem.列名` の形式になっているか（`="列名"` という文字列になっていないか。全項目が空欄で表示される既知の原因）
-- [ ] 不明なPropertyを推測で作っていないか
+- [ ] 不明なPropertyを推測で作っていないか。特に**似た兄弟コントロール同士でProperty名を取り違えていないか**（`ModernText`の色は`Color`であって`Badge`の`FontColor`ではない、`ModernDropdown`の初期値は`Default`であって`ModernCombobox`の`DefaultSelectedItems`ではない、`ModernTextInput`のヒント文字列は`Placeholder`であって`HintText`ではない、など。実際にAIがこれらを取り違えてエラーになった実例あり）
 - [ ] 保存処理・更新処理・削除処理を意図せず書いていないか（会議用モックの場合）
 - [ ] 画面名・コントロール名が命名規則（第1部6章）に沿っているか
 - [ ] ステータス色が本書のパレット（第1部2章）と一致しているか
